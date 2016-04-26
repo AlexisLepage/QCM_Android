@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MyQCM</string>
+    <string name="name">Identifiant </string>
+    <string name="first_name">Password </string>
+    <string name="button_text">Connecte toi !</string>
+    <string name="bienvenue">Bienvenue %1$s votre password est %2$s</string>
+
+</resources>
