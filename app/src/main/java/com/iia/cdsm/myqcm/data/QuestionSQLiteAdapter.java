@@ -24,7 +24,7 @@ public class QuestionSQLiteAdapter {
     public static final String COL_UPDATED_AT = "updated_at";
     public static final String COL_QCM_ID = "qcm_id";
 
-    private SQLiteDatabase db;
+    private static SQLiteDatabase db;
     private MyQcmSQLiteOpenHelper helper;
 
     /**
@@ -64,8 +64,8 @@ public class QuestionSQLiteAdapter {
      * @param question
      * @return line result
      */
-    public long insertQuestion(Question question){
-        return db.insert(TABLE_QUESTION, null, this.questionToContentValues(question));
+    public static long insertQuestion(Question question){
+        return db.insert(TABLE_QUESTION, null, QuestionSQLiteAdapter.questionToContentValues(question));
     }
 
     /**
@@ -139,7 +139,7 @@ public class QuestionSQLiteAdapter {
      * @param question
      * @return ContentValue
      */
-    private ContentValues questionToContentValues(Question question){
+    private static ContentValues questionToContentValues(Question question){
         ContentValues values = new ContentValues();
         values.put(COL_TITLE, question.getTitle());
         values.put(COL_VALUE, question.getValue());
@@ -160,8 +160,8 @@ public class QuestionSQLiteAdapter {
         result.setId(c.getLong(c.getColumnIndex(COL_ID)));
         result.setTitle(c.getString(c.getColumnIndex(COL_TITLE)));
         result.setValue(c.getInt(c.getColumnIndex(COL_VALUE)));
-        result.setCreated_at();
-        result.setUpdated_at();
+        result.setCreated_at(c.getString(c.getColumnIndex(COL_CREATED_AT)));
+        result.setUpdated_at(c.getString(c.getColumnIndex(COL_UPDATED_AT)));
         result.setQcm_id(c.getLong(c.getColumnIndex(COL_QCM_ID)));
 
         return result;

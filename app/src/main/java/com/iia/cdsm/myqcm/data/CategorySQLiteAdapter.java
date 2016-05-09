@@ -20,7 +20,7 @@ public class CategorySQLiteAdapter {
     public static final String COL_CREATED_AT = "created_at";
     public static final String COL_UPDATED_AT = "updated_at";
 
-    private SQLiteDatabase db;
+    public static SQLiteDatabase db;
     private MyQcmSQLiteOpenHelper helper;
 
     /**
@@ -56,8 +56,8 @@ public class CategorySQLiteAdapter {
      * @param category
      * @return line result
      */
-    public long insertCategory(Category category){
-        return db.insert(TABLE_CATEGORY, null, this.categoryToContentValues(category));
+    public static long insertCategory(Category category){
+        return db.insert(TABLE_CATEGORY, null, CategorySQLiteAdapter.categoryToContentValues(category));
     }
 
     /**
@@ -83,6 +83,29 @@ public class CategorySQLiteAdapter {
         String[] cols = {COL_ID, COL_NAME, COL_CREATED_AT, COL_UPDATED_AT};
         String whereClausesSelect = COL_ID + "= ?";
         String[] whereArgsSelect = {String.valueOf(id)};
+
+        Cursor c = db.query(TABLE_CATEGORY, cols, whereClausesSelect, whereArgsSelect,null, null, null);
+
+        Category result = null;
+
+        if (c.getCount() > 0){
+            c.moveToFirst();
+            result = cursorToItem(c);
+        }
+
+        return result;
+    }
+
+    /**
+     * Select a Category with his Name.
+     * @param name
+     * @return Category
+     */
+    public static Category getCategoryByName(String name){
+
+        String[] cols = {COL_ID, COL_NAME, COL_CREATED_AT, COL_UPDATED_AT};
+        String whereClausesSelect = COL_NAME + "= ?";
+        String[] whereArgsSelect = {String.valueOf(name)};
 
         Cursor c = db.query(TABLE_CATEGORY, cols, whereClausesSelect, whereArgsSelect,null, null, null);
 
@@ -131,7 +154,7 @@ public class CategorySQLiteAdapter {
      * @param category
      * @return ContentValue
      */
-    private ContentValues categoryToContentValues(Category category){
+    private static ContentValues categoryToContentValues(Category category){
         ContentValues values = new ContentValues();
         values.put(COL_NAME, category.getName());
         values.put(COL_CREATED_AT, category.getCreated_at());
@@ -145,12 +168,12 @@ public class CategorySQLiteAdapter {
      * @param c
      * @return Category
      */
-    public Category cursorToItem(Cursor c){
+    public static Category cursorToItem(Cursor c){
         Category result = new Category();
         result.setId(c.getLong(c.getColumnIndex(COL_ID)));
         result.setName(c.getString(c.getColumnIndex(COL_NAME)));
-        result.setCreated_at();
-        result.setUpdated_at();
+        result.setCreated_at(c.getString(c.getColumnIndex(COL_CREATED_AT)));
+        result.setUpdated_at(c.getString(c.getColumnIndex(COL_UPDATED_AT)));
 
         return result;
     }

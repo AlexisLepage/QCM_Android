@@ -13,6 +13,7 @@ import com.iia.cdsm.myqcm.data.QcmSQLiteAdapter;
 import com.iia.cdsm.myqcm.webservice.UserWSAdapter;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
@@ -34,15 +35,26 @@ public class MainQCMActivity extends AppCompatActivity {
 
                 String login = editLogin.getText().toString();
 
-                UserWSAdapter.getUser(1, new JsonHttpResponseHandler() {
+                UserWSAdapter.getUser(login, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        User item = UserWSAdapter.jsonToItem(response);
+                        User item = null;
+                        try {
+                            item = UserWSAdapter.jsonToItem(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
-                        Toast.makeText(MainQCMActivity.this, item.getLogin(), Toast.LENGTH_LONG).show();
-
+                        Toast.makeText(MainQCMActivity.this, item.getEmail(), Toast.LENGTH_LONG).show();
                     }
-                });
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        super.onFailure(statusCode, headers, throwable, errorResponse);
+
+                        Toast.makeText(MainQCMActivity.this, "ERREUR CONNEXION", Toast.LENGTH_LONG).show();
+                    }
+            });
 
 
                 //Envoie requête au webservice en vérifiant login.

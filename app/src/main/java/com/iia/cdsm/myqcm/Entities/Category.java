@@ -64,10 +64,8 @@ public class Category {
      * Set Category Updated_at
      * @param
      */
-    public void setUpdated_at() {
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
-        this.updated_at = sdf.format(c.getTime());
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
     }
 
     /**
@@ -82,10 +80,8 @@ public class Category {
      * Set Category Created_at
      * @param
      */
-    public void setCreated_at() {
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
-        this.created_at = sdf.format(c.getTime());
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 
     @Override

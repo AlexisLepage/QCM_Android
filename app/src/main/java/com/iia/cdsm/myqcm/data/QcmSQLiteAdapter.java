@@ -27,7 +27,7 @@ public class QcmSQLiteAdapter {
     public static final String COL_UPDATED_AT = "updated_at";
     public static final String COL_CATEGORY_ID = "category_id";
 
-    private SQLiteDatabase db;
+    private static SQLiteDatabase db;
     private MyQcmSQLiteOpenHelper helper;
 
     /**
@@ -70,8 +70,8 @@ public class QcmSQLiteAdapter {
      * @param qcm
      * @return line result
      */
-    public long insertQcm(Qcm qcm){
-        return db.insert(TABLE_QCM, null, this.qcmToContentValues(qcm));
+    public static long insertQcm(Qcm qcm){
+        return db.insert(TABLE_QCM, null, QcmSQLiteAdapter.qcmToContentValues(qcm));
     }
 
     /**
@@ -146,7 +146,7 @@ public class QcmSQLiteAdapter {
      * @param qcm
      * @return ContentValue
      */
-    private ContentValues qcmToContentValues(Qcm qcm){
+    private static ContentValues qcmToContentValues(Qcm qcm){
         ContentValues values = new ContentValues();
         values.put(COL_NAME, qcm.getName());
         values.put(COL_IS_AVAILABLE, qcm.getIs_available());
@@ -173,8 +173,8 @@ public class QcmSQLiteAdapter {
         result.setBeginning_at(c.getString(c.getColumnIndex(COL_BEGINNING_AT)));
         result.setFinished_at(c.getString(c.getColumnIndex(COL_FINISHED_AT)));
         result.setDuration(c.getInt(c.getColumnIndex(COL_DURATION)));
-        result.setCreated_at();
-        result.setUpdated_at();
+        result.setCreated_at(c.getString(c.getColumnIndex(COL_CREATED_AT)));
+        result.setUpdated_at(c.getString(c.getColumnIndex(COL_UPDATED_AT)));
         result.setCategory_id(c.getLong(c.getColumnIndex(COL_CATEGORY_ID)));
 
         return result;
