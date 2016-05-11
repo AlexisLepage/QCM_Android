@@ -51,10 +51,16 @@ public class QuestionSQLiteAdapter {
                 + TABLE_QCM + "(id) " + ");";
     }
 
+    /**
+     * Open the connection with Database
+     */
     public void open(){
         this.db = this.helper.getWritableDatabase();
     }
 
+    /**
+     * Close the connection with Database
+     */
     public void close(){
         this.db.close();
     }
@@ -91,6 +97,29 @@ public class QuestionSQLiteAdapter {
         String[] cols = {COL_ID, COL_TITLE, COL_VALUE, COL_CREATED_AT, COL_UPDATED_AT, COL_QCM_ID};
         String whereClausesSelect = COL_ID + "= ?";
         String[] whereArgsSelect = {String.valueOf(id)};
+
+        Cursor c = db.query(TABLE_QUESTION, cols, whereClausesSelect, whereArgsSelect,null, null, null);
+
+        Question result = null;
+
+        if (c.getCount() > 0){
+            c.moveToFirst();
+            result = cursorToItem(c);
+        }
+
+        return result;
+    }
+
+    /**
+     * Select a Question with his Title.
+     * @param title
+     * @return Question
+     */
+    public Question getQuestionByTitle(String title){
+
+        String[] cols = {COL_ID, COL_TITLE, COL_VALUE, COL_CREATED_AT, COL_UPDATED_AT, COL_QCM_ID};
+        String whereClausesSelect = COL_TITLE + "= ?";
+        String[] whereArgsSelect = {String.valueOf(title)};
 
         Cursor c = db.query(TABLE_QUESTION, cols, whereClausesSelect, whereArgsSelect,null, null, null);
 

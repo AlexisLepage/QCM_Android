@@ -51,23 +51,44 @@ public class UserWSAdapter {
     private static final String JSON_LIST_ANSWER = "answers";
 
     private Context ctx;
+    private AsyncHttpClient client = new AsyncHttpClient();
 
-    private static AsyncHttpClient client = new AsyncHttpClient();
-
+    /**
+     * Create a context for UserWSAdapter.
+     * @param context
+     * @return
+     */
     public UserWSAdapter(Context context){
+
         this.ctx = context;
     }
 
+    /**
+     * Select a User by his Login in WebService.
+     * @param login
+     * @param handler
+     */
     public void getUser(String login, AsyncHttpResponseHandler handler){
         String url = String.format("%s/%s/%s", BASE_URL, ENTITY_USER, login);
         client.get(url, handler);
     }
 
-    public static void getAllUser(AsyncHttpResponseHandler responseHandler){
+    /**
+     * Select all Users in WebService
+     * @param responseHandler
+     * @return
+     */
+    public void getAllUser(AsyncHttpResponseHandler responseHandler){
         String url = String.format("%s/%s", BASE_URL, ENTITY_USER);
         client.get(url, responseHandler);
     }
 
+    /**
+     * Convert JsonObjet to DataObject.
+     * Insert a DataObjet if is't exist.
+     * @param json
+     * @return User
+     */
     public User jsonToItem(JSONObject json) throws JSONException {
 
         CategorySQLiteAdapter categorySQLiteAdapter = new CategorySQLiteAdapter(this.ctx);
@@ -90,91 +111,105 @@ public class UserWSAdapter {
 
                 JSONObject jsonQcm = new JSONObject(jsonUserQcms.getString(ENTITY_QCM));
 
-                Qcm qcm = new Qcm();
-                qcm.setId(jsonQcm.optInt(JSON_COL_ID));
-                qcm.setName(jsonQcm.getString(JSON_COL_NAME));
-                qcm.setIs_available(jsonQcm.getBoolean(JSON_COL_IS_AVAILABLE));
-                qcm.setBeginning_at(jsonQcm.getString(JSON_COL_BEGINNING_AT));
-                qcm.setFinished_at(jsonQcm.getString(JSON_COL_FINISHED_AT));
-                qcm.setDuration(jsonQcm.getInt(JSON_COL_DURATION));
-                qcm.setCreated_at(jsonQcm.getString(JSON_COL_CREATED_AT));
-                qcm.setUpdated_at(jsonQcm.getString(JSON_COL_UPDATED_AT));
-
-                //GetCategory pour savoir si elle est déjà présente,
-                //Dans le cas contraire l'insérer.
-                JSONObject jsonCategory = new JSONObject(jsonQcm.getString(ENTITY_CATEGORY));
-
-                categorySQLiteAdapter.open();
-                Category categoryResult = categorySQLiteAdapter.getCategoryByName(jsonCategory.getString(JSON_COL_NAME));
-
-
-
-                if(categoryResult == null){
-
-                    //Création de l'objet
-                    Category category = new Category();
-                    category.setId(jsonCategory.getInt(JSON_COL_ID));
-                    category.setName(jsonCategory.getString(JSON_COL_NAME));
-                    category.setCreated_at(jsonCategory.getString(JSON_COL_CREATED_AT));
-                    category.setUpdated_at(jsonCategory.getString(JSON_COL_UPDATED_AT));
-
-                    //Insertion en base de la catégorie
-                    categorySQLiteAdapter.insertCategory(category);
-
-                    categoryResult = category;
-                }
-
-                categorySQLiteAdapter.close();
-
-                //Liaison de l'objet
-                qcm.setCategory_id(categoryResult.getId());
-
-                //Insertion en base du Qcm.
                 qcmSQLiteAdapter.open();
-                qcmSQLiteAdapter.insertQcm(qcm);
-                qcmSQLiteAdapter.close();
+                Qcm qcmResult = qcmSQLiteAdapter.getQcm(jsonQcm.getLong(JSON_COL_ID));
 
-                JSONArray arrayQuestions = new JSONArray(json.getString(JSON_LIST_QUESTION));
-                if (arrayQuestions != null){
-                    for (int j = 0; j < arrayQuestions.length(); j++) {
-                        JSONObject rowQuestion = arrayQuestions.getJSONObject(j);
+                if (qcmResult == null){
+                    Qcm qcm = new Qcm();
+                    qcm.setId(jsonQcm.optInt(JSON_COL_ID));
+                    qcm.setName(jsonQcm.getString(JSON_COL_NAME));
+                    qcm.setIs_available(jsonQcm.getBoolean(JSON_COL_IS_AVAILABLE));
+                    qcm.setBeginning_at(jsonQcm.getString(JSON_COL_BEGINNING_AT));
+                    qcm.setFinished_at(jsonQcm.getString(JSON_COL_FINISHED_AT));
+                    qcm.setDuration(jsonQcm.getInt(JSON_COL_DURATION));
+                    qcm.setCreated_at(jsonQcm.getString(JSON_COL_CREATED_AT));
+                    qcm.setUpdated_at(jsonQcm.getString(JSON_COL_UPDATED_AT));
 
-                        Question question = new Question();
-                        question.setId(rowQuestion.optInt(JSON_COL_ID));
-                        question.setTitle(rowQuestion.optString(JSON_COL_TITLE));
-                        question.setValue(rowQuestion.optInt(JSON_COL_VALUE));
-                        question.setCreated_at(rowQuestion.optString(JSON_COL_CREATED_AT));
-                        question.setUpdated_at(rowQuestion.optString(JSON_COL_UPDATED_AT));
-                        question.setQcm_id(jsonQcm.optInt(JSON_COL_ID));
+                    //GetCategory pour savoir si elle est déjà présente,
+                    //Dans le cas contraire l'insérer.
+                    JSONObject jsonCategory = new JSONObject(jsonQcm.getString(ENTITY_CATEGORY));
 
-                        //Insertion en base de la question
-                        questionSQLiteAdapter.open();
-                        questionSQLiteAdapter.insertQuestion(question);
-                        questionSQLiteAdapter.close();
+                    categorySQLiteAdapter.open();
+                    Category categoryResult = categorySQLiteAdapter.getCategory(jsonCategory.getLong(JSON_COL_ID));
 
-                        // Liste des réponses
-                        JSONArray arrayAnswers = new JSONArray(rowQuestion.getString(JSON_LIST_ANSWER));
+                    if(categoryResult == null){
 
-                        if (arrayAnswers != null){
-                            for (int k = 0; k < arrayAnswers.length(); k++) {
-                                JSONObject rowAnswer = arrayAnswers.getJSONObject(k);
+                        //Création de l'objet
+                        Category category = new Category();
+                        category.setId(jsonCategory.getInt(JSON_COL_ID));
+                        category.setName(jsonCategory.getString(JSON_COL_NAME));
+                        category.setCreated_at(jsonCategory.getString(JSON_COL_CREATED_AT));
+                        category.setUpdated_at(jsonCategory.getString(JSON_COL_UPDATED_AT));
 
-                                Answer answer = new Answer();
-                                answer.setId(rowAnswer.optInt(JSON_COL_ID));
-                                answer.setTitle(rowAnswer.optString(JSON_COL_TITLE));
-                                answer.setIs_valid(rowAnswer.optBoolean(JSON_COL_IS_VALID));
-                                answer.setCreated_at(rowAnswer.optString(JSON_COL_CREATED_AT));
-                                answer.setUpdated_at(rowAnswer.optString(JSON_COL_UPDATED_AT));
-                                answer.setQuestion_id(rowQuestion.optInt(JSON_COL_ID));
+                        //Insertion en base de la catégorie
+                        categorySQLiteAdapter.insertCategory(category);
 
-                                //Insertion en base de la réponse
-                                answerSQLiteAdapter.open();
-                                answerSQLiteAdapter.insertAnswer(answer);
-                                answerSQLiteAdapter.close();
+                        categoryResult = category;
+                    }
+
+                    categorySQLiteAdapter.close();
+
+                    //Liaison de l'objet
+                    qcm.setCategory_id(categoryResult.getId());
+
+                    //Insertion en base du Qcm.
+                    qcmSQLiteAdapter.insertQcm(qcm);
+
+                    JSONArray arrayQuestions = new JSONArray(jsonQcm.getString(JSON_LIST_QUESTION));
+                    if (arrayQuestions != null){
+                        for (int j = 0; j < arrayQuestions.length(); j++) {
+                            JSONObject rowQuestion = arrayQuestions.getJSONObject(j);
+
+                            questionSQLiteAdapter.open();
+                            Question questionResult = questionSQLiteAdapter.getQuestion(rowQuestion.getLong(JSON_COL_ID));
+
+                            if (questionResult == null){
+                                Question question = new Question();
+                                question.setId(rowQuestion.optInt(JSON_COL_ID));
+                                question.setTitle(rowQuestion.optString(JSON_COL_TITLE));
+                                question.setValue(rowQuestion.optInt(JSON_COL_VALUE));
+                                question.setCreated_at(rowQuestion.optString(JSON_COL_CREATED_AT));
+                                question.setUpdated_at(rowQuestion.optString(JSON_COL_UPDATED_AT));
+                                question.setQcm_id(jsonQcm.optInt(JSON_COL_ID));
+
+                                //Insertion en base de la question
+                                questionSQLiteAdapter.insertQuestion(question);
+
+                                // Liste des réponses
+                                JSONArray arrayAnswers = new JSONArray(rowQuestion.getString(JSON_LIST_ANSWER));
+
+                                if (arrayAnswers != null){
+                                    for (int k = 0; k < arrayAnswers.length(); k++) {
+                                        JSONObject rowAnswer = arrayAnswers.getJSONObject(k);
+
+                                        answerSQLiteAdapter.open();
+
+                                        Answer answerResult = answerSQLiteAdapter.getAnswer(rowAnswer.getLong(JSON_COL_ID));
+
+                                        if (answerResult == null){
+                                            Answer answer = new Answer();
+                                            answer.setId(rowAnswer.optInt(JSON_COL_ID));
+                                            answer.setTitle(rowAnswer.optString(JSON_COL_TITLE));
+                                            answer.setIs_valid(rowAnswer.optBoolean(JSON_COL_IS_VALID));
+                                            answer.setCreated_at(rowAnswer.optString(JSON_COL_CREATED_AT));
+                                            answer.setUpdated_at(rowAnswer.optString(JSON_COL_UPDATED_AT));
+                                            answer.setQuestion_id(rowQuestion.optInt(JSON_COL_ID));
+
+                                            //Insertion en base de la réponse
+                                            answerSQLiteAdapter.insertAnswer(answer);
+                                        }
+
+                                        answerSQLiteAdapter.close();
+                                    }
+                                }
                             }
+
+                            questionSQLiteAdapter.close();
                         }
                     }
                 }
+
+                qcmSQLiteAdapter.close();
             }
         }
 
@@ -183,7 +218,12 @@ public class UserWSAdapter {
         return user;
     }
 
-    public static JSONObject itemToJson(User item) throws JSONException {
+    /**
+     * Convert DataObject to JsonObjet.
+     * @param item
+     * @return JSONObject
+     */
+    public JSONObject itemToJson(User item) throws JSONException {
 
         JSONObject result = new JSONObject();
 
@@ -198,7 +238,12 @@ public class UserWSAdapter {
         return result;
     }
 
-    public static RequestParams itemToParams(User item){
+    /**
+     * Convert DataObject to Params.
+     * @param item
+     * @return RequestParams
+     */
+    public RequestParams itemToParams(User item){
         RequestParams params = new RequestParams();
         params.put(JSON_COL_LOGIN, item.getLogin());
         params.put(JSON_COL_PASSWORD, item.getPassword());

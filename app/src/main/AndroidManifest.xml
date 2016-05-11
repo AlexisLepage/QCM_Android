@@ -3,6 +3,7 @@
     package="com.iia.cdsm.myqcm" >
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +16,10 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".View.ListCategoryActivity">
+        </activity>
+        <activity android:name=".View.ViewCategoryActivity">
         </activity>
 
     </application>

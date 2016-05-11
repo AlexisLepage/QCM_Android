@@ -45,10 +45,16 @@ public class CategorySQLiteAdapter {
                 + COL_UPDATED_AT + " TEXT NOT NULL);";
     }
 
+    /**
+     * Open the connection with Database
+     */
     public void open(){
         this.db = this.helper.getWritableDatabase();
     }
 
+    /**
+     * Close the connection with Database
+     */
     public void close(){
         this.db.close();
     }

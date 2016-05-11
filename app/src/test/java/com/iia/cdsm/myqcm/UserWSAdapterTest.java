@@ -8,6 +8,10 @@ import com.loopj.android.http.RequestHandle;
 import org.json.JSONObject;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -15,28 +19,50 @@ import static org.junit.Assert.assertTrue;
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
  */
 public class UserWSAdapterTest {
+
+    private static final String BASE_URL = "http://192.168.1.31/Qcm/web/app_dev.php/api";
+    private static final String ENTITY_USER = "users";
+
     @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+        public void getUser() throws IOException {
+            String login = "admin";
+
+            String strUrl = String.format("%s/%s/%s", BASE_URL, ENTITY_USER, login);
+
+            try {
+                URL url = new URL(strUrl);
+                HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+                urlConn.connect();
+
+                assertEquals(HttpURLConnection.HTTP_OK, urlConn.getResponseCode());
+
+            } catch (IOException e) {
+                System.err.println("Error HTTP connection");
+                e.printStackTrace();
+                throw e;
+            }
+
     }
 
     @Test
-    public void getUser(){
-        String BASE_URL = "http://192.168.1.31/Qcm/web/app_dev.php/api";
-        String ENTITY_USER = "users";
+    public void getAllUser() throws IOException {
         String login = "admin";
-        AsyncHttpClient client = new AsyncHttpClient();
-        JsonHttpResponseHandler handler = new JsonHttpResponseHandler();
 
-        String url = String.format("%s/%s/%s", BASE_URL, ENTITY_USER, login);
-        RequestHandle response = client.get(url, handler);
+        String strUrl = String.format("%s/%s", BASE_URL, ENTITY_USER);
 
-        Boolean success = false;
-        if(response != null){
-            success = true;
+        try {
+            URL url = new URL(strUrl);
+            HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+            urlConn.connect();
+
+            assertEquals(HttpURLConnection.HTTP_OK, urlConn.getResponseCode());
+
+        } catch (IOException e) {
+            System.err.println("Error HTTP connection");
+            e.printStackTrace();
+            throw e;
         }
 
-        assertTrue(success);
     }
 
 }

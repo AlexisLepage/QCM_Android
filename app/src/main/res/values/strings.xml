@@ -4,5 +4,6 @@
     <string name="first_name">Password </string>
     <string name="button_text">Connecte toi !</string>
     <string name="bienvenue">Bienvenue %1$s votre password est %2$s</string>
+    <string name="name_category">Category name</string>
 
 </resources>

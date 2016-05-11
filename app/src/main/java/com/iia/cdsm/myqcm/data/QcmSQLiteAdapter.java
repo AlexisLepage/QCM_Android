@@ -57,10 +57,16 @@ public class QcmSQLiteAdapter {
                 + TABLE_CATEGORY + "(id) " + ");";
     }
 
+    /**
+     * Open the connection with Database
+     */
     public void open(){
         this.db = this.helper.getWritableDatabase();
     }
 
+    /**
+     * Close the connection with Database
+     */
     public void close(){
         this.db.close();
     }
@@ -98,6 +104,30 @@ public class QcmSQLiteAdapter {
                 COL_FINISHED_AT, COL_DURATION, COL_CREATED_AT, COL_UPDATED_AT, COL_CATEGORY_ID};
         String whereClausesSelect = COL_ID + "= ?";
         String[] whereArgsSelect = {String.valueOf(id)};
+
+        Cursor c = db.query(TABLE_QCM, cols, whereClausesSelect, whereArgsSelect,null, null, null);
+
+        Qcm result = null;
+
+        if (c.getCount() > 0){
+            c.moveToFirst();
+            result = cursorToItem(c);
+        }
+
+        return result;
+    }
+
+    /**
+     * Select a Qcm with his Name.
+     * @param name
+     * @return Qcm
+     */
+    public Qcm getQcmByName(String name){
+
+        String[] cols = {COL_ID, COL_NAME, COL_IS_AVAILABLE, COL_BEGINNING_AT, COL_BEGINNING_AT,
+                COL_FINISHED_AT, COL_DURATION, COL_CREATED_AT, COL_UPDATED_AT, COL_CATEGORY_ID};
+        String whereClausesSelect = COL_NAME + "= ?";
+        String[] whereArgsSelect = {String.valueOf(name)};
 
         Cursor c = db.query(TABLE_QCM, cols, whereClausesSelect, whereArgsSelect,null, null, null);
 
