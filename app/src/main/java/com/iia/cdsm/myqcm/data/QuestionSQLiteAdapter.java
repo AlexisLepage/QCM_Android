@@ -24,7 +24,7 @@ public class QuestionSQLiteAdapter {
     public static final String COL_UPDATED_AT = "updated_at";
     public static final String COL_QCM_ID = "qcm_id";
 
-    private static SQLiteDatabase db;
+    private SQLiteDatabase db;
     private MyQcmSQLiteOpenHelper helper;
 
     /**
@@ -64,8 +64,8 @@ public class QuestionSQLiteAdapter {
      * @param question
      * @return line result
      */
-    public static long insertQuestion(Question question){
-        return db.insert(TABLE_QUESTION, null, QuestionSQLiteAdapter.questionToContentValues(question));
+    public long insertQuestion(Question question){
+        return db.insert(TABLE_QUESTION, null, this.questionToContentValues(question));
     }
 
     /**
@@ -139,7 +139,7 @@ public class QuestionSQLiteAdapter {
      * @param question
      * @return ContentValue
      */
-    private static ContentValues questionToContentValues(Question question){
+    private ContentValues questionToContentValues(Question question){
         ContentValues values = new ContentValues();
         values.put(COL_TITLE, question.getTitle());
         values.put(COL_VALUE, question.getValue());

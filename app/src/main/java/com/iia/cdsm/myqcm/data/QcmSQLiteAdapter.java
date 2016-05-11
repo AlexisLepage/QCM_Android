@@ -27,7 +27,7 @@ public class QcmSQLiteAdapter {
     public static final String COL_UPDATED_AT = "updated_at";
     public static final String COL_CATEGORY_ID = "category_id";
 
-    private static SQLiteDatabase db;
+    private SQLiteDatabase db;
     private MyQcmSQLiteOpenHelper helper;
 
     /**
@@ -70,8 +70,8 @@ public class QcmSQLiteAdapter {
      * @param qcm
      * @return line result
      */
-    public static long insertQcm(Qcm qcm){
-        return db.insert(TABLE_QCM, null, QcmSQLiteAdapter.qcmToContentValues(qcm));
+    public long insertQcm(Qcm qcm){
+        return db.insert(TABLE_QCM, null, this.qcmToContentValues(qcm));
     }
 
     /**
@@ -146,7 +146,7 @@ public class QcmSQLiteAdapter {
      * @param qcm
      * @return ContentValue
      */
-    private static ContentValues qcmToContentValues(Qcm qcm){
+    private ContentValues qcmToContentValues(Qcm qcm){
         ContentValues values = new ContentValues();
         values.put(COL_NAME, qcm.getName());
         values.put(COL_IS_AVAILABLE, qcm.getIs_available());

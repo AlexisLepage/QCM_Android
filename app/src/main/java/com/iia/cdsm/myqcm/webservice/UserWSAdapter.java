@@ -1,6 +1,8 @@
 package com.iia.cdsm.myqcm.webservice;
 
 
+import android.content.Context;
+
 import com.iia.cdsm.myqcm.Entities.Answer;
 import com.iia.cdsm.myqcm.Entities.Category;
 import com.iia.cdsm.myqcm.Entities.Qcm;
@@ -48,9 +50,15 @@ public class UserWSAdapter {
     private static final String JSON_LIST_QUESTION = "questions";
     private static final String JSON_LIST_ANSWER = "answers";
 
+    private Context ctx;
+
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static void getUser(String login, AsyncHttpResponseHandler handler){
+    public UserWSAdapter(Context context){
+        this.ctx = context;
+    }
+
+    public void getUser(String login, AsyncHttpResponseHandler handler){
         String url = String.format("%s/%s/%s", BASE_URL, ENTITY_USER, login);
         client.get(url, handler);
     }
@@ -60,7 +68,12 @@ public class UserWSAdapter {
         client.get(url, responseHandler);
     }
 
-    public static User jsonToItem(JSONObject json) throws JSONException {
+    public User jsonToItem(JSONObject json) throws JSONException {
+
+        CategorySQLiteAdapter categorySQLiteAdapter = new CategorySQLiteAdapter(this.ctx);
+        QcmSQLiteAdapter qcmSQLiteAdapter = new QcmSQLiteAdapter(this.ctx);
+        QuestionSQLiteAdapter questionSQLiteAdapter = new QuestionSQLiteAdapter(this.ctx);
+        AnswerSQLiteAdapter answerSQLiteAdapter = new AnswerSQLiteAdapter(this.ctx);
 
         User user = new User();
         user.setId(json.optInt(JSON_COL_ID));
@@ -91,10 +104,9 @@ public class UserWSAdapter {
                 //Dans le cas contraire l'insérer.
                 JSONObject jsonCategory = new JSONObject(jsonQcm.getString(ENTITY_CATEGORY));
 
-                CategorySQLiteAdapter categorySQLiteAdapter = new QcmSQLiteAdapter(UserWSAdapter.this);
                 categorySQLiteAdapter.open();
-                Category categoryResult = CategorySQLiteAdapter.getCategoryByName(jsonCategory.getString(JSON_COL_NAME));
-                categorySQLiteAdapter.close();
+                Category categoryResult = categorySQLiteAdapter.getCategoryByName(jsonCategory.getString(JSON_COL_NAME));
+
 
 
                 if(categoryResult == null){
@@ -107,16 +119,20 @@ public class UserWSAdapter {
                     category.setUpdated_at(jsonCategory.getString(JSON_COL_UPDATED_AT));
 
                     //Insertion en base de la catégorie
-                    CategorySQLiteAdapter.insertCategory(category);
+                    categorySQLiteAdapter.insertCategory(category);
 
                     categoryResult = category;
                 }
+
+                categorySQLiteAdapter.close();
 
                 //Liaison de l'objet
                 qcm.setCategory_id(categoryResult.getId());
 
                 //Insertion en base du Qcm.
-                QcmSQLiteAdapter.insertQcm(qcm);
+                qcmSQLiteAdapter.open();
+                qcmSQLiteAdapter.insertQcm(qcm);
+                qcmSQLiteAdapter.close();
 
                 JSONArray arrayQuestions = new JSONArray(json.getString(JSON_LIST_QUESTION));
                 if (arrayQuestions != null){
@@ -132,7 +148,9 @@ public class UserWSAdapter {
                         question.setQcm_id(jsonQcm.optInt(JSON_COL_ID));
 
                         //Insertion en base de la question
-                        QuestionSQLiteAdapter.insertQuestion(question);
+                        questionSQLiteAdapter.open();
+                        questionSQLiteAdapter.insertQuestion(question);
+                        questionSQLiteAdapter.close();
 
                         // Liste des réponses
                         JSONArray arrayAnswers = new JSONArray(rowQuestion.getString(JSON_LIST_ANSWER));
@@ -150,7 +168,9 @@ public class UserWSAdapter {
                                 answer.setQuestion_id(rowQuestion.optInt(JSON_COL_ID));
 
                                 //Insertion en base de la réponse
-                                AnswerSQLiteAdapter.insertAnswer(answer);
+                                answerSQLiteAdapter.open();
+                                answerSQLiteAdapter.insertAnswer(answer);
+                                answerSQLiteAdapter.close();
                             }
                         }
                     }
