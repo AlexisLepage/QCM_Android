@@ -26,7 +26,7 @@ import org.json.JSONObject;
  */
 public class UserWSAdapter {
 
-    private static final String BASE_URL = "http://192.168.1.31/Qcm/web/app_dev.php/api";
+    private static final String BASE_URL = "http://192.168.100.116/Qcm/web/app_dev.php/api";
     private static final String ENTITY_USER = "users";
     private static final String ENTITY_QCM = "qcm";
     private static final String ENTITY_CATEGORY = "category";

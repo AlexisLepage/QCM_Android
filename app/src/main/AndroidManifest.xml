@@ -21,6 +21,10 @@
         </activity>
         <activity android:name=".View.ViewCategoryActivity">
         </activity>
+        <activity android:name=".View.ListQcmActivity">
+        </activity>
+        <activity android:name=".View.ViewQcmActivity">
+        </activity>
 
     </application>
 

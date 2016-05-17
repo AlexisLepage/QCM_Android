@@ -1,5 +1,6 @@
 package com.iia.cdsm.myqcm.View;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class MainQCMActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_qcm);
 
+
         final EditText editLogin = (EditText)this.findViewById(R.id.editLogin);
         final EditText editPassword = (EditText)this.findViewById(R.id.editPassword);
         Button btConnexion = (Button)this.findViewById(R.id.btConnexion);
@@ -40,7 +42,12 @@ public class MainQCMActivity extends AppCompatActivity {
 
                 String login = editLogin.getText().toString();
 
+                final ProgressDialog progressDialog = new ProgressDialog(MainQCMActivity.this);
+                progressDialog.setMessage("Loading...");
+                progressDialog.show();
+
                 userWSAdapter.getUser(login, new JsonHttpResponseHandler() {
+
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         User user = new User();
@@ -48,6 +55,10 @@ public class MainQCMActivity extends AppCompatActivity {
                             user = userWSAdapter.jsonToItem(response);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        }
+
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
                         }
 
                         Toast.makeText(MainQCMActivity.this, "INSERT JSON OK", Toast.LENGTH_LONG).show();
@@ -60,15 +71,15 @@ public class MainQCMActivity extends AppCompatActivity {
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                         super.onFailure(statusCode, headers, throwable, errorResponse);
 
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+
                         Toast.makeText(MainQCMActivity.this, "ERREUR CONNEXION", Toast.LENGTH_LONG).show();
                     }
+
             });
             }
         });
     }
-
-
-
-
-
 }

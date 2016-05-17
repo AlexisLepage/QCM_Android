@@ -5,5 +5,7 @@
     <string name="button_text">Connecte toi !</string>
     <string name="bienvenue">Bienvenue %1$s votre password est %2$s</string>
     <string name="name_category">Category name</string>
+    <string name="name_qcm">Qcm name</string>
+    <string name="duration_qcm">Qcm duration</string>
 
 </resources>

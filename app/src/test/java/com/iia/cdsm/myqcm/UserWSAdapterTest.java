@@ -1,11 +1,5 @@
 package com.iia.cdsm.myqcm;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestHandle;
-
-import org.json.JSONObject;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -13,7 +7,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
@@ -23,6 +16,10 @@ public class UserWSAdapterTest {
     private static final String BASE_URL = "http://192.168.1.31/Qcm/web/app_dev.php/api";
     private static final String ENTITY_USER = "users";
 
+    /**
+     * Test GetUser function to WebService.
+     * @throws IOException
+     */
     @Test
         public void getUser() throws IOException {
             String login = "admin";
@@ -44,10 +41,12 @@ public class UserWSAdapterTest {
 
     }
 
+    /**
+     * Get all User function to WebService.
+     * @throws IOException
+     */
     @Test
     public void getAllUser() throws IOException {
-        String login = "admin";
-
         String strUrl = String.format("%s/%s", BASE_URL, ENTITY_USER);
 
         try {

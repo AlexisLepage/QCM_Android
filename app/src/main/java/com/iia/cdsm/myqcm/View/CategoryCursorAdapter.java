@@ -15,12 +15,12 @@ import com.iia.cdsm.myqcm.data.CategorySQLiteAdapter;
 /**
  * Created by Alex on 11/05/2016.
  */
-public class CategoryCusorAdapter extends CursorAdapter{
-    public CategoryCusorAdapter(Context context, Cursor c, boolean autoRequery) {
+public class CategoryCursorAdapter extends CursorAdapter{
+    public CategoryCursorAdapter(Context context, Cursor c, boolean autoRequery) {
         super(context, c, autoRequery);
     }
 
-    public CategoryCusorAdapter(Context context, Cursor c, int flags) {
+    public CategoryCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 

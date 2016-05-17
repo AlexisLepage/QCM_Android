@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.iia.cdsm.myqcm.Entities.Qcm;
+import com.iia.cdsm.myqcm.View.ListQcmActivity;
 
 import java.util.ArrayList;
 
@@ -29,12 +30,14 @@ public class QcmSQLiteAdapter {
 
     private SQLiteDatabase db;
     private MyQcmSQLiteOpenHelper helper;
+    private Context ctx;
 
     /**
      * Helper Object to access db
      * @param context
      */
     public QcmSQLiteAdapter(Context context){
+        this.ctx = context;
         helper = new MyQcmSQLiteOpenHelper(context, MyQcmSQLiteOpenHelper.DB_NAME, null, 1);
     }
 
@@ -220,4 +223,24 @@ public class QcmSQLiteAdapter {
         Cursor c = db.query(TABLE_QCM, cols, null, null, null, null, null);
         return c;
     }
+
+    /**
+     * Select a Cursor with his IdCategory.
+     * @param id
+     * @return Cursor
+     */
+    public Cursor getCursorByIdCategory(Long id){
+
+        ArrayList<Qcm> result = null;
+
+        String[] cols = {COL_ID, COL_NAME, COL_IS_AVAILABLE, COL_BEGINNING_AT, COL_BEGINNING_AT,
+                COL_FINISHED_AT, COL_DURATION, COL_CREATED_AT, COL_UPDATED_AT, COL_CATEGORY_ID};
+        String whereClausesSelect = COL_CATEGORY_ID + "= ?";
+        String[] whereArgsSelect = {String.valueOf(id)};
+
+        Cursor c = db.query(TABLE_QCM, cols, whereClausesSelect, whereArgsSelect,null, null, null);
+
+        return c;
+    }
+
 }
