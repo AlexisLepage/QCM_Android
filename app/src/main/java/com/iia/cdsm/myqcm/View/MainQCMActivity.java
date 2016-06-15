@@ -30,7 +30,6 @@ public class MainQCMActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_qcm);
 
-
         final EditText editLogin = (EditText)this.findViewById(R.id.editLogin);
         final EditText editPassword = (EditText)this.findViewById(R.id.editPassword);
         Button btConnexion = (Button)this.findViewById(R.id.btConnexion);
@@ -63,7 +62,7 @@ public class MainQCMActivity extends AppCompatActivity {
 
                         Toast.makeText(MainQCMActivity.this, "INSERT JSON OK", Toast.LENGTH_LONG).show();
 
-                        Intent intent = new Intent(MainQCMActivity.this, ListCategoryActivity.class);
+                        Intent intent = new Intent(MainQCMActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
 

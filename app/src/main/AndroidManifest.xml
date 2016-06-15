@@ -9,9 +9,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".View.MainQCMActivity" >
+        android:supportsRtl="true" >
+        <activity
+            android:name=".View.MainQCMActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -25,7 +26,8 @@
         </activity>
         <activity android:name=".View.ViewQcmActivity">
         </activity>
-
+        <activity android:name=".View.MainActivity" android:theme="@style/ThemeTactFactory">
+        </activity>
     </application>
 
 </manifest>

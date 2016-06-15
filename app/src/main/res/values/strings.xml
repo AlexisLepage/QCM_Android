@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MyQCM</string>
     <string name="name">Identifiant </string>
@@ -7,5 +8,18 @@
     <string name="name_category">Category name</string>
     <string name="name_qcm">Qcm name</string>
     <string name="duration_qcm">Qcm duration</string>
+
+    <!-- Nav tiroirs Menu Items -->
+    <string-array  name= "drawer_items" >
+        <item> LISTE DES CATEGORIE </item>
+        <item> MON COMPTE </item>
+        <item> REGLES QCM </item>
+        <item> MENTIONS </item>
+        <item> DECONNEXION </item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
 
 </resources>
