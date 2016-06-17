@@ -134,6 +134,31 @@ public class QuestionSQLiteAdapter {
     }
 
     /**
+     * Select a Question with his QcmId.
+     * @param qcmId
+     * @return Question
+     */
+    public ArrayList<Question> getQuestionByQcmId(long qcmId){
+
+        String[] cols = {COL_ID, COL_TITLE, COL_VALUE, COL_CREATED_AT, COL_UPDATED_AT, COL_QCM_ID};
+        String whereClausesSelect = COL_QCM_ID + "= ?";
+        String[] whereArgsSelect = {String.valueOf(qcmId)};
+
+        Cursor c = db.query(TABLE_QUESTION, cols, whereClausesSelect, whereArgsSelect,null, null, null);
+
+        ArrayList<Question> result = null;
+
+        if (c.moveToFirst()){
+            result = new ArrayList<Question>();
+            do {
+                result.add(this.cursorToItem(c));
+            } while (c.moveToNext());
+        }
+        c.close();
+        return result;
+    }
+
+    /**
      * Get all Question
      * @return ArrayList<>
      */

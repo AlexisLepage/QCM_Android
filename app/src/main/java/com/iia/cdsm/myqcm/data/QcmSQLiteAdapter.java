@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.iia.cdsm.myqcm.Entities.Qcm;
-import com.iia.cdsm.myqcm.View.ListQcmActivity;
 
 import java.util.ArrayList;
 

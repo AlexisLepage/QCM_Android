@@ -1,4 +1,4 @@
-package com.iia.cdsm.myqcm.View;
+package com.iia.cdsm.myqcm.View.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,30 +8,28 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.iia.cdsm.myqcm.Entities.Category;
 import com.iia.cdsm.myqcm.R;
-import com.iia.cdsm.myqcm.data.CategorySQLiteAdapter;
+import com.iia.cdsm.myqcm.View.CursorAdapter.QcmCursorAdapter;
+import com.iia.cdsm.myqcm.data.QcmSQLiteAdapter;
 
 /**
- * Created by Alex on 11/05/2016.
+ * Created by Alexis on 17/05/2016.
  */
-public class ListCategoryActivity extends Activity {
-
+public class ListQcmActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category_list);
+        setContentView(R.layout.activity_qcm_list);
 
         new LoadTask(this).execute();
 
-        ListView lv = (ListView)this.findViewById(R.id.lv_categories);
+        ListView lv = (ListView) this.findViewById(R.id.lv_qcms);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(view.getContext(), ListQcmActivity.class);
+                Intent intent = new Intent(view.getContext(), BeforeQuestionsActivity.class);
                 intent.putExtra("id", id);
                 startActivity(intent);
             }
@@ -40,14 +38,14 @@ public class ListCategoryActivity extends Activity {
 
     public class LoadTask extends AsyncTask<Void, Void, Cursor> {
 
-        private ListCategoryActivity ctx;
+        private ListQcmActivity ctx;
 
         /**
          * Link Context with current activity
-         * @param listCategoryActivity
+         * @param listQcmActivity
          */
-        public LoadTask(ListCategoryActivity listCategoryActivity) {
-            this.ctx = listCategoryActivity;
+        public LoadTask(ListQcmActivity listQcmActivity) {
+            this.ctx = listQcmActivity;
         }
 
         @Override
@@ -58,17 +56,20 @@ public class ListCategoryActivity extends Activity {
         @Override
         protected Cursor doInBackground(Void... params) {
 
-            CategorySQLiteAdapter categorySQLiteAdapter = new CategorySQLiteAdapter(this.ctx);
-            categorySQLiteAdapter.open();
-            Cursor c = categorySQLiteAdapter.getAllCursor();
+            QcmSQLiteAdapter qcmSQLiteAdapter = new QcmSQLiteAdapter(this.ctx);
+            qcmSQLiteAdapter.open();
+            //récupération extra
+            Bundle extra = getIntent().getExtras();
+            Long id = extra.getLong("id");
+            Cursor c = qcmSQLiteAdapter.getCursorByIdCategory(id);
             return c;
         }
 
         @Override
         protected void onPostExecute(Cursor result) {
 
-            CategoryCursorAdapter adapter = new CategoryCursorAdapter(this.ctx, result, 0);
-            ListView lv = (ListView)this.ctx.findViewById(R.id.lv_categories);
+            QcmCursorAdapter adapter = new QcmCursorAdapter(this.ctx, result, 0);
+            ListView lv = (ListView)this.ctx.findViewById(R.id.lv_qcms);
             lv.setAdapter(adapter);
             super.onPostExecute(result);
         }

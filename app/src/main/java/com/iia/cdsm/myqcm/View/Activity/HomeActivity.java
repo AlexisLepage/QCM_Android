@@ -1,4 +1,4 @@
-package com.iia.cdsm.myqcm.View;
+package com.iia.cdsm.myqcm.View.Activity;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -11,20 +11,20 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.iia.cdsm.myqcm.R;
+import com.iia.cdsm.myqcm.View.Fragment.AccountFragment;
+import com.iia.cdsm.myqcm.View.Fragment.LegalMentionsFragment;
+import com.iia.cdsm.myqcm.View.Fragment.ListCategoryFragment;
+import com.iia.cdsm.myqcm.View.Fragment.RulesFragment;
 
-public class MainActivity extends Activity {
+public class HomeActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         mTitle = mDrawerTitle = getTitle();
         mPlanetTitles = getResources().getStringArray(R.array.drawer_items);
@@ -91,18 +91,42 @@ public class MainActivity extends Activity {
     }
 
     private void selectItem(int position) {
-        //Switch suivant l'item selectionné
-        //Appel de l'item
-        //Update des item et title
 
-        // update the main content by replacing fragments
-        Fragment fragment = new PlanetFragment();
+        Fragment fragment;
+
+        switch (position){
+            case 0:
+                fragment = new ListCategoryFragment();
+                break;
+
+            case 1:
+                fragment = new AccountFragment();
+                break;
+
+            case 2:
+                fragment = new RulesFragment();
+                break;
+
+            case 3:
+                fragment = new LegalMentionsFragment();
+                break;
+
+            case 4:
+                Intent intent = new Intent(HomeActivity.this, ConnectionActivity.class);
+                this.finish();
+                startActivity(intent);
+
+            default:
+                fragment = new ListCategoryFragment();
+                break;
+        }
+
         Bundle args = new Bundle();
         args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
         fragment.setArguments(args);
 
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame_home, fragment).commit();
 
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);

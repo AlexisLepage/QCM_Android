@@ -1,4 +1,4 @@
-package com.iia.cdsm.myqcm.View;
+package com.iia.cdsm.myqcm.View.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,8 +11,6 @@ import android.widget.Toast;
 
 import com.iia.cdsm.myqcm.Entities.User;
 import com.iia.cdsm.myqcm.R;
-import com.iia.cdsm.myqcm.data.AnswerSQLiteAdapter;
-import com.iia.cdsm.myqcm.data.QcmSQLiteAdapter;
 import com.iia.cdsm.myqcm.webservice.UserWSAdapter;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -21,14 +19,14 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class MainQCMActivity extends AppCompatActivity {
+public class ConnectionActivity extends AppCompatActivity {
 
-    UserWSAdapter userWSAdapter = new UserWSAdapter(MainQCMActivity.this);
+    UserWSAdapter userWSAdapter = new UserWSAdapter(ConnectionActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_qcm);
+        setContentView(R.layout.activity_connection);
 
         final EditText editLogin = (EditText)this.findViewById(R.id.editLogin);
         final EditText editPassword = (EditText)this.findViewById(R.id.editPassword);
@@ -41,7 +39,7 @@ public class MainQCMActivity extends AppCompatActivity {
 
                 String login = editLogin.getText().toString();
 
-                final ProgressDialog progressDialog = new ProgressDialog(MainQCMActivity.this);
+                final ProgressDialog progressDialog = new ProgressDialog(ConnectionActivity.this);
                 progressDialog.setMessage("Loading...");
                 progressDialog.show();
 
@@ -60,9 +58,9 @@ public class MainQCMActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                         }
 
-                        Toast.makeText(MainQCMActivity.this, "INSERT JSON OK", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ConnectionActivity.this, "INSERT JSON OK", Toast.LENGTH_LONG).show();
 
-                        Intent intent = new Intent(MainQCMActivity.this, MainActivity.class);
+                        Intent intent = new Intent(ConnectionActivity.this, HomeActivity.class);
                         startActivity(intent);
                     }
 
@@ -74,7 +72,7 @@ public class MainQCMActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                         }
 
-                        Toast.makeText(MainQCMActivity.this, "ERREUR CONNEXION", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ConnectionActivity.this, "ERREUR CONNEXION", Toast.LENGTH_LONG).show();
                     }
 
             });

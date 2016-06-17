@@ -1,4 +1,4 @@
-package com.iia.cdsm.myqcm.View;
+package com.iia.cdsm.myqcm.View.CursorAdapter;
 
 import android.content.Context;
 import android.database.Cursor;

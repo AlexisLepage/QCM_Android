@@ -11,22 +11,28 @@
         android:label="@string/app_name"
         android:supportsRtl="true" >
         <activity
-            android:name=".View.MainQCMActivity"
+            android:name=".View.Activity.ConnectionActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.ListCategoryActivity">
-        </activity>
         <activity android:name=".View.ViewCategoryActivity">
         </activity>
-        <activity android:name=".View.ListQcmActivity">
+        <activity android:name=".View.Activity.ListQcmActivity" android:theme="@style/ThemeTactFactory">
         </activity>
         <activity android:name=".View.ViewQcmActivity">
         </activity>
-        <activity android:name=".View.MainActivity" android:theme="@style/ThemeTactFactory">
+        <activity android:name=".View.Activity.HomeActivity" android:theme="@style/ThemeTactFactory">
+        </activity>
+        <activity android:name=".View.Activity.BeforeQuestionsActivity" android:theme="@style/ThemeTactFactory">
+        </activity>
+        <activity android:name=".View.Activity.AfterQuestionsActivity" android:theme="@style/ThemeTactFactory">
+        </activity>
+        <activity android:name=".View.Activity.QuestionsActivity" android:theme="@style/ThemeTactFactory">
+        </activity>
+        <activity android:name=".View.ViewAnswerActivity" android:theme="@style/ThemeTactFactory">
         </activity>
     </application>
 
