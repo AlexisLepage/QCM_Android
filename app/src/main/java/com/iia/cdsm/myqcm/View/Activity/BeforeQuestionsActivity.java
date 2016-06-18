@@ -36,6 +36,7 @@ public class BeforeQuestionsActivity extends Activity{
                 Long id = extra.getLong("id");
                 Intent intent = new Intent(v.getContext(), QuestionsActivity.class);
                 intent.putExtra("id", id);
+                BeforeQuestionsActivity.this.finish();
                 startActivity(intent);
             }
         });

@@ -32,8 +32,6 @@
         </activity>
         <activity android:name=".View.Activity.QuestionsActivity" android:theme="@style/ThemeTactFactory">
         </activity>
-        <activity android:name=".View.ViewAnswerActivity" android:theme="@style/ThemeTactFactory">
-        </activity>
     </application>
 
 </manifest>

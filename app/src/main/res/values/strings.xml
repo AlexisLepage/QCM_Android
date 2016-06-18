@@ -13,6 +13,7 @@
     <string name="title_answer">Answer title</string>
     <string name="duration_qcm">Qcm duration</string>
     <string name="yes">Oui</string>
+    <string name="return_home">Retour à l\'accueil</string>
     <string name="no">Non</string>
     <string name="before_questions">Vous venez de sélectionner un QCM. Une fois commencé vous ne
         pourrez revenir en arrière, de plus un choronomètre se déclenchera avec un temps définit.
@@ -20,7 +21,7 @@
         commmencer ?</string>
     <string name="previous">Précédent</string>
     <string name="next">Suivant</string>
-
+    <string name="after_questions">Merci d\'avoir renseigné ce Qcm, les résultats vous serons transmit par le biais de votre professeur !</string>
 
     <!-- Nav tiroirs Menu Items -->
     <string-array  name= "drawer_items" >

@@ -113,8 +113,9 @@ public class UserWSAdapter {
 
                 qcmSQLiteAdapter.open();
                 Qcm qcmResult = qcmSQLiteAdapter.getQcm(jsonQcm.getLong(JSON_COL_ID));
+                boolean identicQcm = false;
 
-                if (qcmResult == null){
+                if (qcmResult == null) {
                     Qcm qcm = new Qcm();
                     qcm.setId(jsonQcm.optInt(JSON_COL_ID));
                     qcm.setName(jsonQcm.getString(JSON_COL_NAME));
@@ -125,8 +126,18 @@ public class UserWSAdapter {
                     qcm.setCreated_at(jsonQcm.getString(JSON_COL_CREATED_AT));
                     qcm.setUpdated_at(jsonQcm.getString(JSON_COL_UPDATED_AT));
 
-                    //GetCategory pour savoir si elle est déjà présente,
-                    //Dans le cas contraire l'insérer.
+                    identicQcm = true;
+                    qcmResult = qcm;
+                }else{
+                    if (qcmResult.getId() != jsonQcm.getLong(JSON_COL_ID)){qcmResult.setId(jsonQcm.getLong(JSON_COL_ID));}
+                    if (!qcmResult.getName().equals(jsonQcm.getString(JSON_COL_NAME))){qcmResult.setName(jsonQcm.getString(JSON_COL_NAME));}
+                    if (!qcmResult.getIs_available().equals(jsonQcm.getBoolean(JSON_COL_IS_AVAILABLE))){qcmResult.setIs_available(jsonQcm.getBoolean(JSON_COL_IS_AVAILABLE));}
+                    if (!qcmResult.getBeginning_at().equals(jsonQcm.getString(JSON_COL_BEGINNING_AT))){qcmResult.setBeginning_at(jsonQcm.getString(JSON_COL_BEGINNING_AT));}
+                    if (!qcmResult.getFinished_at().equals(jsonQcm.getString(JSON_COL_FINISHED_AT))){qcmResult.setFinished_at(jsonQcm.getString(JSON_COL_FINISHED_AT));}
+                    if (!qcmResult.getDuration().equals(jsonQcm.getInt(JSON_COL_DURATION))){qcmResult.setDuration(jsonQcm.getInt(JSON_COL_DURATION));}
+                    if (!qcmResult.getUpdated_at().equals(jsonQcm.getString(JSON_COL_UPDATED_AT))){qcmResult.setUpdated_at(jsonQcm.getString(JSON_COL_UPDATED_AT));}
+                }
+
                     JSONObject jsonCategory = new JSONObject(jsonQcm.getString(ENTITY_CATEGORY));
 
                     categorySQLiteAdapter.open();
@@ -134,36 +145,43 @@ public class UserWSAdapter {
 
                     if(categoryResult == null){
 
-                        //Création de l'objet
                         Category category = new Category();
                         category.setId(jsonCategory.getInt(JSON_COL_ID));
                         category.setName(jsonCategory.getString(JSON_COL_NAME));
                         category.setCreated_at(jsonCategory.getString(JSON_COL_CREATED_AT));
                         category.setUpdated_at(jsonCategory.getString(JSON_COL_UPDATED_AT));
 
-                        //Insertion en base de la catégorie
                         categorySQLiteAdapter.insertCategory(category);
-
                         categoryResult = category;
+                    }else{
+                        boolean identicCategory = true;
+                        if (categoryResult.getId() != jsonCategory.getLong(JSON_COL_ID)){identicCategory = false; categoryResult.setId(jsonCategory.getLong(JSON_COL_ID));}
+                        if (!categoryResult.getName().equals(jsonCategory.getString(JSON_COL_NAME))){identicCategory = false; categoryResult.setName(jsonCategory.getString(JSON_COL_NAME));}
+                        if (!categoryResult.getUpdated_at().equals(jsonCategory.getString(JSON_COL_UPDATED_AT))){identicCategory = false; categoryResult.setUpdated_at(jsonCategory.getString(JSON_COL_UPDATED_AT));}
+                        if (!identicCategory){
+                            categorySQLiteAdapter.updateCategory(categoryResult);
+                        }
                     }
 
                     categorySQLiteAdapter.close();
 
-                    //Liaison de l'objet
-                    qcm.setCategory_id(categoryResult.getId());
+                    qcmResult.setCategory_id(categoryResult.getId());
 
-                    //Insertion en base du Qcm.
-                    qcmSQLiteAdapter.insertQcm(qcm);
-
+                if (identicQcm){
+                    qcmSQLiteAdapter.insertQcm(qcmResult);
+                }else {
+                    qcmSQLiteAdapter.updateQcm(qcmResult);
+                }
                     JSONArray arrayQuestions = new JSONArray(jsonQcm.getString(JSON_LIST_QUESTION));
                     if (arrayQuestions != null){
                         for (int j = 0; j < arrayQuestions.length(); j++) {
+
                             JSONObject rowQuestion = arrayQuestions.getJSONObject(j);
 
                             questionSQLiteAdapter.open();
                             Question questionResult = questionSQLiteAdapter.getQuestion(rowQuestion.getLong(JSON_COL_ID));
 
-                            if (questionResult == null){
+                            if (questionResult == null) {
                                 Question question = new Question();
                                 question.setId(rowQuestion.optInt(JSON_COL_ID));
                                 question.setTitle(rowQuestion.optString(JSON_COL_TITLE));
@@ -172,8 +190,18 @@ public class UserWSAdapter {
                                 question.setUpdated_at(rowQuestion.optString(JSON_COL_UPDATED_AT));
                                 question.setQcm_id(jsonQcm.optInt(JSON_COL_ID));
 
-                                //Insertion en base de la question
                                 questionSQLiteAdapter.insertQuestion(question);
+                            }else {
+                                boolean identicQuestion = true;
+                                if (questionResult.getId() != rowQuestion.getLong(JSON_COL_ID)){identicQuestion = false; questionResult.setId(rowQuestion.optInt(JSON_COL_ID));}
+                                if (!questionResult.getTitle().equals(rowQuestion.getString(JSON_COL_TITLE))){identicQuestion = false; questionResult.setTitle(rowQuestion.optString(JSON_COL_TITLE));}
+                                if (!questionResult.getValue().equals(rowQuestion.getInt(JSON_COL_VALUE))){identicQuestion = false; questionResult.setValue(rowQuestion.optInt(JSON_COL_VALUE));}
+                                if (!questionResult.getUpdated_at().equals(rowQuestion.getString(JSON_COL_UPDATED_AT))){identicQuestion = false; questionResult.setUpdated_at(rowQuestion.optString(JSON_COL_UPDATED_AT));}
+                                if (questionResult.getQcm_id() != jsonQcm.getLong(JSON_COL_ID)){identicQuestion = false; questionResult.setQcm_id(jsonQcm.optInt(JSON_COL_ID));}
+                                if (!identicQuestion){
+                                    questionSQLiteAdapter.updateQuestion(questionResult);
+                                }
+                            }
 
                                 // Liste des réponses
                                 JSONArray arrayAnswers = new JSONArray(rowQuestion.getString(JSON_LIST_ANSWER));
@@ -195,20 +223,24 @@ public class UserWSAdapter {
                                             answer.setUpdated_at(rowAnswer.optString(JSON_COL_UPDATED_AT));
                                             answer.setQuestion_id(rowQuestion.optInt(JSON_COL_ID));
 
-                                            //Insertion en base de la réponse
                                             answerSQLiteAdapter.insertAnswer(answer);
+                                        }else {
+                                            boolean identicAnswer = true;
+                                            if (answerResult.getId() != rowAnswer.getLong(JSON_COL_ID)){identicAnswer = false; answerResult.setId(rowAnswer.optInt(JSON_COL_ID));}
+                                            if (!answerResult.getTitle().equals(rowAnswer.getString(JSON_COL_TITLE))){identicAnswer = false; answerResult.setTitle(rowAnswer.optString(JSON_COL_TITLE));}
+                                            if (!answerResult.getIs_valid().equals(rowAnswer.getBoolean(JSON_COL_IS_VALID))){identicAnswer = false; answerResult.setIs_valid(rowAnswer.optBoolean(JSON_COL_IS_VALID));}
+                                            if (!answerResult.getUpdated_at().equals(rowAnswer.getString(JSON_COL_UPDATED_AT))){identicAnswer = false; answerResult.setUpdated_at(rowAnswer.optString(JSON_COL_UPDATED_AT));}
+                                            if (answerResult.getQuestion_id() != rowQuestion.getLong(JSON_COL_ID)){identicAnswer = false; answerResult.setQuestion_id(rowQuestion.optInt(JSON_COL_ID));}
+                                            if (!identicAnswer){
+                                                answerSQLiteAdapter.updateAnswer(answerResult);
+                                            }
                                         }
-
                                         answerSQLiteAdapter.close();
                                     }
                                 }
                             }
-
                             questionSQLiteAdapter.close();
                         }
-                    }
-                }
-
                 qcmSQLiteAdapter.close();
             }
         }

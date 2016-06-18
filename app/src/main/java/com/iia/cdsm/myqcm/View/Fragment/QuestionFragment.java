@@ -40,10 +40,10 @@ public class QuestionFragment extends Fragment{
 
         QuestionSQLiteAdapter questionSQLiteAdapter = new QuestionSQLiteAdapter(this.getActivity());
         questionSQLiteAdapter.open();
-        ArrayList<Question> questions = questionSQLiteAdapter.getQuestionByQcmId(id);
+        Question question = questionSQLiteAdapter.getQuestion(id);
         questionSQLiteAdapter.close();
 
-        tvTitleQuestion.setText(questions.get(0).getTitle());
+        tvTitleQuestion.setText(question.getTitle());
 
         return view;
     }
