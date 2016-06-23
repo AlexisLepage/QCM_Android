@@ -20,7 +20,7 @@ import android.widget.ListView;
 
 import com.iia.cdsm.myqcm.R;
 import com.iia.cdsm.myqcm.View.Fragment.AccountFragment;
-import com.iia.cdsm.myqcm.View.Fragment.LegalMentionsFragment;
+import com.iia.cdsm.myqcm.View.Fragment.ContactFragment;
 import com.iia.cdsm.myqcm.View.Fragment.ListCategoryFragment;
 import com.iia.cdsm.myqcm.View.Fragment.RulesFragment;
 
@@ -108,7 +108,7 @@ public class HomeActivity extends Activity {
                 break;
 
             case 3:
-                fragment = new LegalMentionsFragment();
+                fragment = new ContactFragment();
                 break;
 
             case 4:

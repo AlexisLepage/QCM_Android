@@ -6,7 +6,7 @@
     <string name="button_text">Connecte toi !</string>
     <string name="bienvenue">Bienvenue %1$s votre password est %2$s</string>
     <string name="account">Mon compte</string>
-    <string name="rules">Les règles du QCM</string>
+    <string name="principe_rules"><u>Principe du QCM :</u></string>
     <string name="legal_mentions">Les mentions légales</string>
     <string name="name_category">Category name</string>
     <string name="name_qcm">Qcm name</string>
@@ -21,14 +21,70 @@
         commmencer ?</string>
     <string name="previous">Précédent</string>
     <string name="next">Suivant</string>
+    <string name="finish">Terminer</string>
     <string name="after_questions">Merci d\'avoir renseigné ce Qcm, les résultats vous serons transmit par le biais de votre professeur !</string>
+    <string name="timer_finished">Le temps imparti est écoulé</string>
+    <string name="show_question">Question %1$S/%2$d</string>
+    <string name="slash">/</string>
+    <string name="login">Login</string>
+    <string name="name_user">Nom</string>
+    <string name="firstname">Prénom</string>
+    <string name="email">Email</string>
+    <string name="points"><u>Notation d\'un QCM</u></string>
+    <string name="result"><u>Résultat du QCM</u></string>
+    <string name="text_principe_rule">
+        Un questionnaire à choix multiples se compose d\'un ensemble cohérent et structuré de questions.
+        Cet ensemble vise un objectif global diagnostique, formatif, ou sommatif, par rapport au contenu
+        d\'une formation. Chaque question se compose d\'un libellé, ainsi que de plusieurs propositions de
+        réponses (2 à 5 propositions en général). Une ou plusieurs réponses peuvent être correcte.
+        Le libellé doit être formulé de manière claire et neutre.
+        Les propositions de réponses doivent être homogènes et les distracteurs pertinents et crédibles.
+        Le placement de la réponse juste parmi les propositions de réponse doit être aléatoire.
+        Le principe directeur est de ne pas influencer le candidat dans son choix.
+        La durée d\'exposition au QCM est instauré par l\'administrateur du QCM et est défini lors sa création
+        sur le BackOffice. Chaque Qcm à donc une durée défini, si ce temps est dépassé l\'utilisateur n\'aura
+        d\'autres choix que de répondre à la question sur lequel il se trouve avant de terminer définitivement
+        la rédaction du QCM.
+    </string>
+
+    <string name="text_points">
+        Un QCM possède des questions et chaque question possède un nombre de point que le créateur du QCM
+        à instauré. Ces points varient en fonction de la difficulté de la question, du nombre de réponse
+        et du nombre de réponse correcte.
+        Le système de notation est simple, vous obtenez la totalité des points lorsque vous avez répondu
+        correctement à l\'ensemble des réponses que l\'administrateur à renseigné comme tel.
+        Cependant, lorsque l\'une ou plusieurs réponses sont manquante ou incomplète vous n\'obtenez pas
+        les points qui sont associés a celle-ci.
+        Dans le cas ou le temps imparti est écoulé, les réponses précédement renseignées seront sauvegardé
+        ainsi que celle sur laquelle vous êtes au moment de l\'arrêt du chronomètre. Toutefois les réponses
+        se trouvant après, et donc n\'ayant pas été renseignées, seront comptabilisées comme fausses.
+    </string>
+
+    <string name="text_results">
+        Une fois un QCM finalisé, une page de finalisation s\'affichera, vous idiquant que celle-ci a
+        correctement été remplit et que les résultats vous seront transmit par le biais de votre professeur.
+        Vous ne pouvez refaire un QCM déjà remplit sans l\'accord de votre professeur qui débloquera ce QCM
+        une nouvelle fois ci besoin est.
+    </string>
+    <string name="email2">Email :</string>
+    <string name="website">Site web :</string>
+    <string name="phone">Téléphone :</string>
+    <string name="location">Adresse :</string>
+    <string name="text_email">contact@tactfactory.com</string>
+    <string name="text_website">www.tactfactory.com</string>
+    <string name="text_phone">01 83 64 25 33</string>
+    <string name="text_location_street">13 rue de l’Union</string>
+    <string name="text_location_city">72000 Le Mans</string>
+    <string name="text_location_country">France</string>
+    <string name="text_contact">Vous rencontrez des soucis sur l\'application ? Notre équipe équipe est à votre
+    disposition !</string>
 
     <!-- Nav tiroirs Menu Items -->
     <string-array  name= "drawer_items" >
         <item> LISTE DES CATEGORIE </item>
         <item> MON COMPTE </item>
         <item> REGLES QCM </item>
-        <item> MENTIONS </item>
+        <item> CONTACT </item>
         <item> DECONNEXION </item>
     </string-array>
 

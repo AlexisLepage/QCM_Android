@@ -5,11 +5,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_marginTop="30dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/imageAccount"
+        android:src="@mipmap/account"/>
+
     <TextView
+        android:id="@+id/tvLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/account"
-        android:id="@+id/textView"
-        android:layout_marginTop="46dp" />
+        android:layout_below="@+id/imageAccount"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/login"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/tvLoginUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLogin"
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp"/>
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLoginUser"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/name_user"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/tvNameUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvName"
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp"/>
+
+    <TextView
+        android:id="@+id/tvFirstname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvNameUser"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/firstname"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/tvFirstnameUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvFirstname"
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp"/>
+
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvFirstnameUser"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/email"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/tvEmailUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEmail"
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp"/>
+
 
 </RelativeLayout>

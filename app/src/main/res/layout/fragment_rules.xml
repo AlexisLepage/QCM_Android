@@ -8,7 +8,54 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/rules"
-        android:id="@+id/textView"
-        android:layout_marginTop="46dp" />
+        android:text="@string/principe_rules"
+        android:id="@+id/tvPrincipeRule"
+        android:layout_marginTop="10dp"
+        android:textSize="18dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_principe_rule"
+        android:id="@+id/tvTextPrincipeRule"
+        android:layout_below="@+id/tvPrincipeRule"
+        android:layout_marginTop="5dp"
+        android:textSize="12dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/points"
+        android:id="@+id/tvPoints"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tvTextPrincipeRule"
+        android:textSize="18dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_points"
+        android:id="@+id/tvTextPoints"
+        android:layout_below="@+id/tvPoints"
+        android:layout_marginTop="5dp"
+        android:textSize="12dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/result"
+        android:id="@+id/tvResult"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tvTextPoints"
+        android:textSize="18dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_results"
+        android:id="@+id/tvTextResult"
+        android:layout_below="@+id/tvResult"
+        android:layout_marginTop="5dp"
+        android:textSize="12dp"/>
+
 </RelativeLayout>

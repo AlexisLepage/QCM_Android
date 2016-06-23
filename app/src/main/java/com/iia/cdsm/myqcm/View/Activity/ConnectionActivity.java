@@ -2,6 +2,7 @@ package com.iia.cdsm.myqcm.View.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Parcel;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -47,7 +48,7 @@ public class ConnectionActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        User user = new User();
+                        User user = null;
                         try {
                             user = userWSAdapter.jsonToItem(response);
                         } catch (JSONException e) {
@@ -57,10 +58,9 @@ public class ConnectionActivity extends AppCompatActivity {
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();
                         }
-
-                        Toast.makeText(ConnectionActivity.this, "INSERT JSON OK", Toast.LENGTH_LONG).show();
-
+                        User FinalUser = new User(user.getId(),user.getLogin(),user.getName(), user.getFirstname(), user.getPassword(), user.getEmail());
                         Intent intent = new Intent(ConnectionActivity.this, HomeActivity.class);
+                        intent.putExtra("user", FinalUser);
                         startActivity(intent);
                     }
 

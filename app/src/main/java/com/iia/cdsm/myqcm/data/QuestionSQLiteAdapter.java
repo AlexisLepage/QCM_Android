@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.iia.cdsm.myqcm.Entities.Question;
 
@@ -71,7 +72,9 @@ public class QuestionSQLiteAdapter {
      * @return line result
      */
     public long insertQuestion(Question question){
-        return db.insert(TABLE_QUESTION, null, this.questionToContentValues(question));
+        long var = db.insert(TABLE_QUESTION, null, this.questionToContentValues(question));
+        Log.d("INSERT QUESTION %s %ld",question.getTitle() + var);
+        return var;
     }
 
     /**
@@ -195,6 +198,7 @@ public class QuestionSQLiteAdapter {
      */
     private ContentValues questionToContentValues(Question question){
         ContentValues values = new ContentValues();
+        values.put(COL_ID, question.getId());
         values.put(COL_TITLE, question.getTitle());
         values.put(COL_VALUE, question.getValue());
         values.put(COL_CREATED_AT, question.getCreated_at());

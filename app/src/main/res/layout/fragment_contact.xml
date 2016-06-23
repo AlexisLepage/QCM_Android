@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textContact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        android:text="@string/text_contact"
+        android:textSize="15dp"/>
+
+    <ImageView
+        android:layout_marginTop="100dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:id="@+id/ivEmail"
+        android:src="@mipmap/mail"/>
+
+    <TextView
+        android:id="@+id/tvEmailTact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        android:layout_marginStart="80dp"
+        android:text="@string/email2"
+        android:textStyle="italic"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/tvTextEmailTact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="111dp"
+        android:layout_marginStart="150dp"
+        android:text="@string/text_email"
+        android:textStyle="bold"
+        android:textSize="18dp"/>
+
+    <ImageView
+    android:layout_marginTop="200dp"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_marginStart="20dp"
+    android:id="@+id/ivWebsite"
+    android:src="@mipmap/website"/>
+
+    <TextView
+        android:id="@+id/tvWebsiteTact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="210dp"
+        android:layout_marginStart="80dp"
+        android:text="@string/website"
+        android:textStyle="italic"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/tvTextWebsiteTact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="211dp"
+        android:layout_marginStart="175dp"
+        android:text="@string/text_website"
+        android:textStyle="bold"
+        android:textSize="18dp"/>
+
+    <ImageView
+        android:layout_marginTop="300dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:id="@+id/ivPhone"
+        android:src="@mipmap/phone"/>
+
+    <TextView
+        android:id="@+id/tvPhoneTact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="310dp"
+        android:layout_marginStart="80dp"
+        android:text="@string/phone"
+        android:textStyle="italic"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/tvTextPhoneTact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="311dp"
+        android:layout_marginStart="190dp"
+        android:text="@string/text_phone"
+        android:textStyle="bold"
+        android:textSize="18dp"/>
+
+    <ImageView
+        android:layout_marginTop="400dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:id="@+id/ivLocation"
+        android:src="@mipmap/location"/>
+
+    <TextView
+        android:id="@+id/tvLocationTact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="410dp"
+        android:layout_marginStart="80dp"
+        android:text="@string/location"
+        android:textStyle="italic"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/tvTextLocationSteetTact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="411dp"
+        android:layout_marginStart="190dp"
+        android:text="@string/text_location_street"
+        android:textStyle="bold"
+        android:textSize="18dp"/>
+
+    <TextView
+        android:id="@+id/tvTextLocationCityTact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="440dp"
+        android:layout_marginStart="190dp"
+        android:text="@string/text_location_city"
+        android:textStyle="bold"
+        android:textSize="18dp"/>
+
+    <TextView
+        android:id="@+id/tvTextLocationCountryTact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="470dp"
+        android:layout_marginStart="190dp"
+        android:text="@string/text_location_country"
+        android:textStyle="bold"
+        android:textSize="18dp"/>
+
+
+
+
+</RelativeLayout>

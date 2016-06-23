@@ -135,6 +135,7 @@ public class TypeMediaSQLiteAdapter {
      */
     private ContentValues typeMediaToContentValues(TypeMedia typeMedia){
         ContentValues values = new ContentValues();
+        values.put(COL_ID, typeMedia.getId());
         values.put(COL_NAME, typeMedia.getName());
 
         return values;

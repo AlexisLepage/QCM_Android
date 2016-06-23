@@ -180,6 +180,7 @@ public class QcmSQLiteAdapter {
      */
     private ContentValues qcmToContentValues(Qcm qcm){
         ContentValues values = new ContentValues();
+        values.put(COL_ID, qcm.getId());
         values.put(COL_NAME, qcm.getName());
         values.put(COL_IS_AVAILABLE, qcm.getIs_available());
         values.put(COL_BEGINNING_AT, qcm.getBeginning_at());

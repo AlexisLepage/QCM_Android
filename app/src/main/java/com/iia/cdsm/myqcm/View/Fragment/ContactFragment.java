@@ -12,10 +12,10 @@ import com.iia.cdsm.myqcm.R;
 /**
  * Created by Alex on 16/06/2016.
  */
-public class LegalMentionsFragment extends Fragment{
+public class ContactFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_legal_mentions, container, false);
+        return inflater.inflate(R.layout.fragment_contact, container, false);
     }
 }

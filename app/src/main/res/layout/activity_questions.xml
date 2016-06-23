@@ -4,11 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/relativeLayout">
+
+    <TextView
+        android:id="@+id/tvTimer"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/tvNowQuestion"
+        android:layout_marginEnd="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"/>
+
+    </RelativeLayout>
+
     <FrameLayout
         android:id="@+id/content_frame_question"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/btNext">
+        android:layout_height="300dp"
+        android:layout_above="@+id/btNext"
+        android:layout_below="@+id/relativeLayout">
 
     </FrameLayout>
 

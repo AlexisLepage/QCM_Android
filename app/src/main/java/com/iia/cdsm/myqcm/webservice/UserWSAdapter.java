@@ -2,12 +2,16 @@ package com.iia.cdsm.myqcm.webservice;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.iia.cdsm.myqcm.Entities.Answer;
 import com.iia.cdsm.myqcm.Entities.Category;
 import com.iia.cdsm.myqcm.Entities.Qcm;
 import com.iia.cdsm.myqcm.Entities.Question;
 import com.iia.cdsm.myqcm.Entities.User;
+import com.iia.cdsm.myqcm.View.Activity.ConnectionActivity;
+import com.iia.cdsm.myqcm.View.Activity.HomeActivity;
 import com.iia.cdsm.myqcm.data.AnswerSQLiteAdapter;
 import com.iia.cdsm.myqcm.data.CategorySQLiteAdapter;
 import com.iia.cdsm.myqcm.data.QcmSQLiteAdapter;
@@ -30,9 +34,10 @@ public class UserWSAdapter {
     private static final String ENTITY_USER = "users";
     private static final String ENTITY_QCM = "qcm";
     private static final String ENTITY_CATEGORY = "category";
-
     private static final String JSON_COL_ID = "id";
     private static final String JSON_COL_LOGIN = "username";
+    private static final String JSON_COL_FIRSTNAME = "firstname";
+
     private static final String JSON_COL_PASSWORD = "password";
     private static final String JSON_COL_EMAIL = "email";
     private static final String JSON_COL_NAME = "name";
@@ -99,6 +104,8 @@ public class UserWSAdapter {
         User user = new User();
         user.setId(json.optInt(JSON_COL_ID));
         user.setLogin(json.optString(JSON_COL_LOGIN));
+        user.setName(json.optString(JSON_COL_NAME));
+        user.setFirstname(json.optString(JSON_COL_FIRSTNAME));
         user.setPassword(json.optString(JSON_COL_PASSWORD));
         user.setEmail(json.optString(JSON_COL_EMAIL));
 
@@ -172,6 +179,9 @@ public class UserWSAdapter {
                 }else {
                     qcmSQLiteAdapter.updateQcm(qcmResult);
                 }
+
+                qcmSQLiteAdapter.close();
+
                     JSONArray arrayQuestions = new JSONArray(jsonQcm.getString(JSON_LIST_QUESTION));
                     if (arrayQuestions != null){
                         for (int j = 0; j < arrayQuestions.length(); j++) {
@@ -203,7 +213,8 @@ public class UserWSAdapter {
                                 }
                             }
 
-                                // Liste des réponses
+                            questionSQLiteAdapter.close();
+
                                 JSONArray arrayAnswers = new JSONArray(rowQuestion.getString(JSON_LIST_ANSWER));
 
                                 if (arrayAnswers != null){
@@ -239,9 +250,7 @@ public class UserWSAdapter {
                                     }
                                 }
                             }
-                            questionSQLiteAdapter.close();
                         }
-                qcmSQLiteAdapter.close();
             }
         }
 

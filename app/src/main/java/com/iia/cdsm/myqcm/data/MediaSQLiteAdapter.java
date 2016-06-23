@@ -152,6 +152,7 @@ public class MediaSQLiteAdapter {
      */
     private ContentValues mediaToContentValues(Media media){
         ContentValues values = new ContentValues();
+        values.put(COL_ID, media.getId());
         values.put(COL_NAME, media.getName());
         values.put(COL_URL, media.getUrl());
         values.put(COL_CREATED_AT, media.getCreated_at());

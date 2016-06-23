@@ -164,6 +164,7 @@ public class CategorySQLiteAdapter {
      */
     private ContentValues categoryToContentValues(Category category){
         ContentValues values = new ContentValues();
+        values.put(COL_ID, category.getId());
         values.put(COL_NAME, category.getName());
         values.put(COL_CREATED_AT, category.getCreated_at());
         values.put(COL_UPDATED_AT, category.getUpdated_at());

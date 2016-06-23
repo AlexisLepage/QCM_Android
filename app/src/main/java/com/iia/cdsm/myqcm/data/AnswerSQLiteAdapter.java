@@ -172,6 +172,7 @@ public class AnswerSQLiteAdapter {
      */
     private ContentValues answerToContentValues(Answer answer){
         ContentValues values = new ContentValues();
+        values.put(COL_ID, answer.getId());
         values.put(COL_TITLE, answer.getTitle());
         values.put(COL_IS_VALID, answer.getIs_valid());
         values.put(COL_IS_SELECTED, answer.getIs_selected());
@@ -207,6 +208,16 @@ public class AnswerSQLiteAdapter {
     public Cursor getAllCursor(){
         String[] cols = {COL_ID, COL_TITLE, COL_IS_VALID, COL_IS_SELECTED, COL_CREATED_AT, COL_UPDATED_AT, COL_QUESTION_ID};
         Cursor c = db.query(TABLE_ANSWER, cols, null, null, null, null, null);
+        return c;
+    }
+
+    /**
+     * Get all Cursor By QuestionId in Answer Table
+     * @return Cursor
+     */
+    public Cursor getAllCursorByQuestionId(Long idQuestion){
+        String[] cols = {COL_ID, COL_TITLE, COL_IS_VALID, COL_IS_SELECTED, COL_CREATED_AT, COL_UPDATED_AT, COL_QUESTION_ID};
+        Cursor c = db.query(TABLE_ANSWER, cols, COL_QUESTION_ID + "=" + idQuestion, null, null, null, null);
         return c;
     }
 }
