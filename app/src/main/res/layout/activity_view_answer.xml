@@ -11,6 +11,10 @@
         android:id="@+id/cbAnswer"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:textSize="16dp"
+        android:scaleX="1.2"
+        android:scaleY="1.2"
+        />
 
 </RelativeLayout>

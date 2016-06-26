@@ -15,10 +15,10 @@ public class Answer {
     protected String title;
 
     /** Answer is_valid */
-    protected Boolean is_valid;
+    protected Integer is_valid;
 
     /** Answer is_selected */
-    protected Boolean is_selected;
+    protected Integer is_selected;
 
     /** Answer Created_at */
     protected String created_at;
@@ -65,7 +65,7 @@ public class Answer {
      * Get Answer Is_valid
      * @return is_valid
      */
-    public Boolean getIs_valid() {
+    public Integer getIs_valid() {
         return is_valid;
     }
 
@@ -73,7 +73,7 @@ public class Answer {
      * Set Answer Is_valid
      * @param is_valid
      */
-    public void setIs_valid(Boolean is_valid) {
+    public void setIs_valid(Integer is_valid) {
         this.is_valid = is_valid;
     }
 
@@ -81,7 +81,7 @@ public class Answer {
      * Get Answer Is_selected
      * @return is_selected
      */
-    public Boolean getIs_selected() {
+    public Integer getIs_selected() {
         return is_selected;
     }
 
@@ -89,7 +89,7 @@ public class Answer {
      * Set Answer Is_selected
      * @param is_selected
      */
-    public void setIs_selected(Boolean is_selected) {
+    public void setIs_selected(Integer is_selected) {
         this.is_selected = is_selected;
     }
 

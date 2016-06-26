@@ -10,19 +10,20 @@
         android:layout_alignParentTop="true"
         android:id="@+id/relativeLayout">
 
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/imageChoice"
+        android:src="@mipmap/timer"/>
+
     <TextView
         android:id="@+id/tvTimer"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"/>
-
-    <TextView
-        android:id="@+id/tvNowQuestion"
-        android:layout_marginEnd="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="35dp"
+        android:textStyle="bold"/>
 
     </RelativeLayout>
 
@@ -30,28 +31,45 @@
         android:id="@+id/content_frame_question"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_above="@+id/btNext"
-        android:layout_below="@+id/relativeLayout">
+        android:layout_above="@+id/ivNext"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_marginTop="30dp">
 
     </FrameLayout>
 
-    <Button
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/next"
-        android:id="@+id/btNext"
+        android:id="@+id/ivNext"
+        android:clickable="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="33dp" />
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="40dp"
+        android:src="@mipmap/next"/>
 
-    <Button
+
+    <TextView
+        android:id="@+id/tvNowQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/previous"
-        android:id="@+id/btPrevious"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textStyle="italic"
+        android:textSize="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:id="@+id/ivPrevious"
         android:layout_gravity="left|bottom"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="39dp" />
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="40dp"
+        android:src="@mipmap/previous"/>
 
 </RelativeLayout>

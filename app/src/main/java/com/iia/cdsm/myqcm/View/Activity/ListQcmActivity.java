@@ -21,6 +21,7 @@ public class ListQcmActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qcm_list);
+        getActionBar().setTitle(R.string.list_qcm);
 
         new LoadTask(this).execute();
 

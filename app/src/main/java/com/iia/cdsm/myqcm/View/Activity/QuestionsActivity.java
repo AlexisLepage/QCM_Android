@@ -3,13 +3,14 @@ package com.iia.cdsm.myqcm.View.Activity;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.iia.cdsm.myqcm.Entities.Answer;
 import com.iia.cdsm.myqcm.Entities.Qcm;
@@ -19,9 +20,16 @@ import com.iia.cdsm.myqcm.View.Fragment.QuestionFragment;
 import com.iia.cdsm.myqcm.data.AnswerSQLiteAdapter;
 import com.iia.cdsm.myqcm.data.QcmSQLiteAdapter;
 import com.iia.cdsm.myqcm.data.QuestionSQLiteAdapter;
+import com.iia.cdsm.myqcm.webservice.UserWSAdapter;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+
+import cz.msebera.android.httpclient.Header;
+
 
 /**
  * Created by Alex on 16/06/2016.
@@ -31,27 +39,33 @@ public class QuestionsActivity extends Activity{
     int i = 0;
     TextView tvNowQuestion = null;
     TextView tvTimer = null;
-    Button btPrevious = null;
-    Button btNext = null;
+    ImageView ivPrevious = null;
+    ImageView ivNext = null;
+    long id = 0;
     private static final String FORMAT = "%02d:%02d:%02d";
     boolean finished = false;
+
+    final QcmSQLiteAdapter qcmSQLiteAdapter = new QcmSQLiteAdapter(this);
+    final UserWSAdapter userWSAdapter = new UserWSAdapter(QuestionsActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions);
+        final Bundle extra = getIntent().getExtras();
+        id = extra.getLong("id");
 
-        Bundle extra = getIntent().getExtras();
-        btNext = (Button) this.findViewById(R.id.btNext);
-        btPrevious = (Button) this.findViewById(R.id.btPrevious);
+        ivNext = (ImageView) this.findViewById(R.id.ivNext);
+        ivPrevious = (ImageView) this.findViewById(R.id.ivPrevious);
         tvTimer = (TextView) this.findViewById(R.id.tvTimer);
         tvNowQuestion = (TextView) this.findViewById(R.id.tvNowQuestion);
 
-        QcmSQLiteAdapter qcmSQLiteAdapter = new QcmSQLiteAdapter(this);
+
         qcmSQLiteAdapter.open();
-        final Qcm qcm = qcmSQLiteAdapter.getQcm(extra.getLong("id"));
+        final Qcm qcm = qcmSQLiteAdapter.getQcm(id);
         qcmSQLiteAdapter.close();
 
+        getActionBar().setTitle(qcm.getName());
         Timer(qcm.getDuration());
 
         QuestionSQLiteAdapter questionSQLiteAdapter = new QuestionSQLiteAdapter(this);
@@ -61,36 +75,35 @@ public class QuestionsActivity extends Activity{
         tvNowQuestion.setText("Question "+(i+1)+"/"+questions.size());
 
         ChangeFragmentQuestion(questions, i);
-        btPrevious.setVisibility(View.GONE);
+        ivPrevious.setVisibility(View.GONE);
 
-        btNext.setOnClickListener(new View.OnClickListener() {
+        ivNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 i++;
                 if (questions.size() == i || finished){
-                    Intent intent = new Intent(QuestionsActivity.this, AfterQuestionsActivity.class);
-                    QuestionsActivity.this.finish();
-                    startActivity(intent);
+                    postJson();
+                    i--;
                 }else{
                     ChangeFragmentQuestion(questions, i);
-                    btPrevious.setVisibility(View.VISIBLE);
+                    ivPrevious.setVisibility(View.VISIBLE);
                     tvNowQuestion.setText("Question "+(i+1)+"/"+questions.size());
                     if (questions.get(questions.size()-1).equals(questions.get(i))){
-                        btNext.setText(R.string.finish);
+                        ivNext.setImageResource(R.mipmap.finish);
                     }
                 }
             }
         });
 
-        btPrevious.setOnClickListener(new View.OnClickListener() {
+        ivPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btNext.setText(R.string.next);
+                ivNext.setImageResource(R.mipmap.next);
                 i--;
                 ChangeFragmentQuestion(questions, i);
                 tvNowQuestion.setText("Question "+(i+1)+"/"+questions.size());
                 if (i == 0){
-                    btPrevious.setVisibility(View.GONE);
+                    ivPrevious.setVisibility(View.GONE);
                 }
 
             }
@@ -124,10 +137,86 @@ public class QuestionsActivity extends Activity{
             @Override
             public void onFinish() {
                 tvTimer.setText(R.string.timer_finished);
-                btPrevious.setVisibility(View.GONE);
-                btNext.setText(R.string.finish);
+                tvTimer.setTextColor(getResources().getColor(R.color.coloRed));
+                ivPrevious.setVisibility(View.GONE);
+                ivNext.setImageResource(R.mipmap.finish);
                 finished = true;
             }
         }.start();
+    }
+
+    protected void postJson (){
+        String json = null;
+
+        final ProgressDialog progressDialog = new ProgressDialog(QuestionsActivity.this);
+        progressDialog.setMessage("Envoie des réponses...");
+        progressDialog.show();
+
+        final float note = calculateNote(id);
+
+        try {
+            json = userWSAdapter.returnJson(id, id, note);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+        userWSAdapter.postQcm(json, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+
+                Toast.makeText(QuestionsActivity.this, "ERREUR ENVOIE JSON", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+
+                Intent intent = new Intent(QuestionsActivity.this, AfterQuestionsActivity.class);
+                QuestionsActivity.this.finish();
+                intent.putExtra("note", note);
+                startActivity(intent);
+            }
+        });
+    }
+
+    protected float calculateNote(long idQcm){
+        float note = 0;
+        Boolean goodAnswer = null;
+
+        QuestionSQLiteAdapter questionSQLiteAdapter = new QuestionSQLiteAdapter(this);
+        questionSQLiteAdapter.open();
+        final ArrayList<Question> questions = questionSQLiteAdapter.getQuestionByQcmId(idQcm);
+        questionSQLiteAdapter.close();
+
+        for (Question question : questions){
+            AnswerSQLiteAdapter answerSQLiteAdapter = new AnswerSQLiteAdapter(this);
+            answerSQLiteAdapter.open();
+            ArrayList<Answer> answers = answerSQLiteAdapter.getAnswerByIdQuestion(question.getId());
+            answerSQLiteAdapter.close();
+
+            goodAnswer = true;
+
+            if (answers != null){
+                for (Answer answer : answers){
+                    if (((answer.getIs_valid() == 1) && (answer.getIs_selected() == 0)) || ((answer.getIs_valid() == 0) && (answer.getIs_selected() == 1))){
+                        goodAnswer = false;
+                    }
+                }
+                if (goodAnswer){
+                    note = note+question.getValue();
+                }
+            }
+        }
+
+        note = (note*20)/questions.size();
+
+        return note;
     }
 }

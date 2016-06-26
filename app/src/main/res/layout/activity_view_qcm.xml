@@ -17,7 +17,9 @@
         android:id="@+id/tvNameQcm"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="15dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,6 +28,7 @@
         android:id="@+id/tvDurationQcm"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="30dp"
+        android:textStyle="italic"/>
 
 </RelativeLayout>

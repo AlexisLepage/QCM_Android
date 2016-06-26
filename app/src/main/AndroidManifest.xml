@@ -12,25 +12,39 @@
         android:supportsRtl="true" >
         <activity
             android:name=".View.Activity.ConnectionActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.ViewCategoryActivity">
+        <activity android:name=".View.ViewCategoryActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".View.Activity.ListQcmActivity" android:theme="@style/ThemeTactFactory">
+        <activity android:name=".View.Activity.ListQcmActivity"
+            android:theme="@style/ThemeTactFactory"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".View.ViewQcmActivity">
+        <activity
+            android:name=".View.ViewQcmActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".View.Activity.HomeActivity" android:theme="@style/ThemeTactFactory">
+        <activity android:name=".View.Activity.HomeActivity"
+            android:theme="@style/ThemeTactFactory"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".View.Activity.BeforeQuestionsActivity" android:theme="@style/ThemeTactFactory">
+        <activity android:name=".View.Activity.BeforeQuestionsActivity"
+            android:theme="@style/ThemeTactFactory"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".View.Activity.AfterQuestionsActivity" android:theme="@style/ThemeTactFactory">
+        <activity android:name=".View.Activity.AfterQuestionsActivity"
+            android:theme="@style/ThemeTactFactory"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".View.Activity.QuestionsActivity" android:theme="@style/ThemeTactFactory">
+        <activity android:name=".View.Activity.QuestionsActivity"
+            android:theme="@style/ThemeTactFactory"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

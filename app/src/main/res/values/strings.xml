@@ -16,13 +16,11 @@
     <string name="return_home">Retour à l\'accueil</string>
     <string name="no">Non</string>
     <string name="before_questions">Vous venez de sélectionner un QCM. Une fois commencé vous ne
-        pourrez revenir en arrière, de plus un choronomètre se déclenchera avec un temps définit.
-        Vous ne pourrez également pas refaire ce Qcm une deuxième fois. souhaitez-vous réellement le
-        commmencer ?</string>
+        pourrez revenir en arrière, souhaitez-vous rééllement lancer ce QCM ?</string>
     <string name="previous">Précédent</string>
     <string name="next">Suivant</string>
     <string name="finish">Terminer</string>
-    <string name="after_questions">Merci d\'avoir renseigné ce Qcm, les résultats vous serons transmit par le biais de votre professeur !</string>
+    <string name="after_questions">Merci d\'avoir renseigné ce Qcm, votre professeur fera le corrigé avec vous !</string>
     <string name="timer_finished">Le temps imparti est écoulé</string>
     <string name="show_question">Question %1$S/%2$d</string>
     <string name="slash">/</string>
@@ -78,10 +76,13 @@
     <string name="text_location_country">France</string>
     <string name="text_contact">Vous rencontrez des soucis sur l\'application ? Notre équipe équipe est à votre
     disposition !</string>
+    <string name="congratulation">FELICITATION</string>
+    <string name="qcm">QCM</string>
+    <string name="list_qcm">LISTE DES QCM</string>
 
     <!-- Nav tiroirs Menu Items -->
     <string-array  name= "drawer_items" >
-        <item> LISTE DES CATEGORIE </item>
+        <item> LISTE DES CATEGORIES </item>
         <item> MON COMPTE </item>
         <item> REGLES QCM </item>
         <item> CONTACT </item>

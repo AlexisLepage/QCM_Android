@@ -2,9 +2,8 @@ package com.iia.cdsm.myqcm.View.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Parcel;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +32,7 @@ public class ConnectionActivity extends AppCompatActivity {
         final EditText editPassword = (EditText)this.findViewById(R.id.editPassword);
         Button btConnexion = (Button)this.findViewById(R.id.btConnexion);
 
-        btConnexion.setOnClickListener(new View.OnClickListener() {
+            btConnexion.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -41,7 +40,7 @@ public class ConnectionActivity extends AppCompatActivity {
                 String login = editLogin.getText().toString();
 
                 final ProgressDialog progressDialog = new ProgressDialog(ConnectionActivity.this);
-                progressDialog.setMessage("Loading...");
+                progressDialog.setMessage("Connexion...");
                 progressDialog.show();
 
                 userWSAdapter.getUser(login, new JsonHttpResponseHandler() {
@@ -49,6 +48,7 @@ public class ConnectionActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         User user = null;
+
                         try {
                             user = userWSAdapter.jsonToItem(response);
                         } catch (JSONException e) {
@@ -58,10 +58,12 @@ public class ConnectionActivity extends AppCompatActivity {
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();
                         }
+
                         User FinalUser = new User(user.getId(),user.getLogin(),user.getName(), user.getFirstname(), user.getPassword(), user.getEmail());
                         Intent intent = new Intent(ConnectionActivity.this, HomeActivity.class);
                         intent.putExtra("user", FinalUser);
                         startActivity(intent);
+                        ConnectionActivity.this.finish();
                     }
 
                     @Override

@@ -50,9 +50,9 @@ public class QuestionFragment extends Fragment{
                 Answer answer = answerSQLiteAdapter.getAnswer(id);
 
                 if (view.isSelected()){
-                    answer.setIs_selected(true);
+                    answer.setIs_selected(1);
                 }else{
-                    answer.setIs_selected(false);
+                    answer.setIs_selected(0);
                 }
                 answerSQLiteAdapter.updateAnswer(answer);
                 answerSQLiteAdapter.close();

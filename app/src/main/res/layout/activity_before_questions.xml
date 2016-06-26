@@ -7,30 +7,52 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/tvNameQcmBeforeQuestions"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:textStyle="bold"
+        android:textSize="24dp"/>
+
+    <ImageView
+        android:layout_marginTop="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/imageChoice"
+        android:src="@mipmap/choice"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/before_questions"
         android:id="@+id/tvBeforeQuestions"
         android:gravity="center"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="96dp" />
+        android:layout_marginTop="290dp" />
 
-    <Button
-        android:layout_width="100dp"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/yes"
         android:id="@+id/btYesQuestions"
-        android:layout_marginStart="67dp"
+        android:layout_marginEnd="75dp"
         android:layout_alignTop="@+id/btNoQuestions"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentEnd="true"
+        android:src="@mipmap/yes"
+        android:clickable="true"/>
 
-    <Button
-        android:layout_width="100dp"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no"
         android:id="@+id/btNoQuestions"
-        android:layout_marginTop="99dp"
+        android:layout_marginTop="50dp"
         android:layout_below="@+id/tvBeforeQuestions"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="45dp" />
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="75dp"
+        android:src="@mipmap/no"
+        android:clickable="true"/>
 
 </RelativeLayout>

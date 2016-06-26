@@ -2,16 +2,12 @@ package com.iia.cdsm.myqcm.webservice;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.iia.cdsm.myqcm.Entities.Answer;
 import com.iia.cdsm.myqcm.Entities.Category;
 import com.iia.cdsm.myqcm.Entities.Qcm;
 import com.iia.cdsm.myqcm.Entities.Question;
 import com.iia.cdsm.myqcm.Entities.User;
-import com.iia.cdsm.myqcm.View.Activity.ConnectionActivity;
-import com.iia.cdsm.myqcm.View.Activity.HomeActivity;
 import com.iia.cdsm.myqcm.data.AnswerSQLiteAdapter;
 import com.iia.cdsm.myqcm.data.CategorySQLiteAdapter;
 import com.iia.cdsm.myqcm.data.QcmSQLiteAdapter;
@@ -24,6 +20,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by Alexis on 23/04/2016.
  * Class for import JSON flux in to this application.
@@ -31,10 +29,14 @@ import org.json.JSONObject;
 public class UserWSAdapter {
 
     private static final String BASE_URL = "http://192.168.1.31/Qcm/web/app_dev.php/api";
+    private static final String UPDATE_QCM = "update_qcm";
     private static final String ENTITY_USER = "users";
+    private static final String ENTITY_USER_SIMPLE = "user";
     private static final String ENTITY_QCM = "qcm";
     private static final String ENTITY_CATEGORY = "category";
     private static final String JSON_COL_ID = "id";
+    private static final String JSON_COL_ID_QCM = "id_qcm";
+    private static final String JSON_COL_ID_USER = "id_user";
     private static final String JSON_COL_LOGIN = "username";
     private static final String JSON_COL_FIRSTNAME = "firstname";
 
@@ -50,6 +52,8 @@ public class UserWSAdapter {
     private static final String JSON_COL_TITLE = "title";
     private static final String JSON_COL_VALUE = "value";
     private static final String JSON_COL_IS_VALID = "is_valid";
+    private static final String JSON_COL_IS_SELECTED = "is_selected";
+    private static final String JSON_COL_NOTE = "note";
 
     private static final String JSON_LIST_USER_QCM = "user_qcms";
     private static final String JSON_LIST_QUESTION = "questions";
@@ -87,6 +91,31 @@ public class UserWSAdapter {
         String url = String.format("%s/%s", BASE_URL, ENTITY_USER);
         client.get(url, responseHandler);
     }
+
+    /**
+     * POST Qcm at WebService.
+     * @param json
+     * @param handler
+     */
+    public void postQcm(String json, AsyncHttpResponseHandler handler){
+        String url = String.format("%s/%s", BASE_URL, UPDATE_QCM);
+        RequestParams params = new RequestParams();
+        params.add("json", json);
+        client.post(url, params, handler);
+    }
+
+    /**
+     * POST Login at WebService to check if exist.
+     * @param login
+     * @param handler
+     */
+    public void postLoginUser(String login, AsyncHttpResponseHandler handler) {
+        String url = String.format("%s/%s", BASE_URL, UPDATE_QCM);
+        RequestParams params = new RequestParams();
+        params.add("login", login);
+        client.post(url, params, handler);
+    }
+
 
     /**
      * Convert JsonObjet to DataObject.
@@ -229,7 +258,7 @@ public class UserWSAdapter {
                                             Answer answer = new Answer();
                                             answer.setId(rowAnswer.optInt(JSON_COL_ID));
                                             answer.setTitle(rowAnswer.optString(JSON_COL_TITLE));
-                                            answer.setIs_valid(rowAnswer.optBoolean(JSON_COL_IS_VALID));
+                                            answer.setIs_valid(boolToInt(rowAnswer.optBoolean(JSON_COL_IS_VALID)));
                                             answer.setCreated_at(rowAnswer.optString(JSON_COL_CREATED_AT));
                                             answer.setUpdated_at(rowAnswer.optString(JSON_COL_UPDATED_AT));
                                             answer.setQuestion_id(rowQuestion.optInt(JSON_COL_ID));
@@ -239,7 +268,7 @@ public class UserWSAdapter {
                                             boolean identicAnswer = true;
                                             if (answerResult.getId() != rowAnswer.getLong(JSON_COL_ID)){identicAnswer = false; answerResult.setId(rowAnswer.optInt(JSON_COL_ID));}
                                             if (!answerResult.getTitle().equals(rowAnswer.getString(JSON_COL_TITLE))){identicAnswer = false; answerResult.setTitle(rowAnswer.optString(JSON_COL_TITLE));}
-                                            if (!answerResult.getIs_valid().equals(rowAnswer.getBoolean(JSON_COL_IS_VALID))){identicAnswer = false; answerResult.setIs_valid(rowAnswer.optBoolean(JSON_COL_IS_VALID));}
+                                            if (!answerResult.getIs_valid().equals(boolToInt(rowAnswer.optBoolean(JSON_COL_IS_VALID)))) {identicAnswer = false; answerResult.setIs_valid(boolToInt(rowAnswer.optBoolean(JSON_COL_IS_VALID)));}
                                             if (!answerResult.getUpdated_at().equals(rowAnswer.getString(JSON_COL_UPDATED_AT))){identicAnswer = false; answerResult.setUpdated_at(rowAnswer.optString(JSON_COL_UPDATED_AT));}
                                             if (answerResult.getQuestion_id() != rowQuestion.getLong(JSON_COL_ID)){identicAnswer = false; answerResult.setQuestion_id(rowQuestion.optInt(JSON_COL_ID));}
                                             if (!identicAnswer){
@@ -254,29 +283,89 @@ public class UserWSAdapter {
             }
         }
 
-
-
         return user;
     }
 
     /**
      * Convert DataObject to JsonObjet.
-     * @param item
+     * @param qcm, id
      * @return JSONObject
      */
-    public JSONObject itemToJson(User item) throws JSONException {
+    public String itemToJson(Qcm qcm, long id) throws JSONException {
 
-        JSONObject result = new JSONObject();
+        String json= "";
 
-        if (item.getLogin() != null){
-            result.put(JSON_COL_LOGIN, item.getLogin());
+        JSONObject jsonObject = new JSONObject();
+
+        JSONObject jsonObjectUser = new JSONObject();
+        jsonObjectUser.accumulate(JSON_COL_ID, id);
+
+        JSONObject jsonObjectQcm = new JSONObject();
+        jsonObjectQcm.accumulate(JSON_COL_ID, qcm.getId());
+        jsonObjectQcm.accumulate(JSON_COL_NAME, qcm.getName());
+
+        QuestionSQLiteAdapter questionSQLiteAdapter = new QuestionSQLiteAdapter(this.ctx);
+        questionSQLiteAdapter.open();
+        ArrayList<Question> questions = questionSQLiteAdapter.getQuestionByQcmId(qcm.getId());
+        questionSQLiteAdapter.close();
+
+        if (questions != null){
+            for (Question question : questions) {
+                JSONObject jsonObjectQuestion = new JSONObject();
+                jsonObjectQuestion.accumulate(JSON_COL_ID, question.getId());
+                jsonObjectQuestion.accumulate(JSON_COL_TITLE, question.getTitle());
+                jsonObjectQuestion.accumulate(JSON_COL_VALUE, question.getValue());
+
+                AnswerSQLiteAdapter answerSQLiteAdapter = new AnswerSQLiteAdapter(this.ctx);
+                answerSQLiteAdapter.open();
+                ArrayList<Answer> answers = answerSQLiteAdapter.getAnswerByIdQuestion(question.getId());
+                answerSQLiteAdapter.close();
+
+                if (answers != null){
+                    for (Answer answer : answers){
+                        JSONObject jsonObjectAnswer = new JSONObject();
+                        jsonObjectAnswer.accumulate(JSON_COL_ID, answer.getId());
+                        jsonObjectAnswer.accumulate(JSON_COL_TITLE, answer.getTitle());
+                        jsonObjectAnswer.accumulate(JSON_COL_IS_VALID, answer.getIs_valid());
+                        jsonObjectAnswer.accumulate(JSON_COL_IS_SELECTED, answer.getIs_selected());
+                        jsonObjectQuestion.accumulate(JSON_LIST_ANSWER, jsonObjectAnswer);
+                    }
+                }
+
+                jsonObjectQcm.accumulate(JSON_LIST_QUESTION, jsonObjectQuestion);
+            }
         }
 
-        if (item.getPassword() != null){
-            result.put(JSON_COL_PASSWORD, item.getPassword());
-        }
+        jsonObject.accumulate(ENTITY_QCM, jsonObjectQcm);
+        jsonObject.accumulate(ENTITY_USER_SIMPLE, jsonObjectUser);
 
-        return result;
+        json = jsonObject.toString();
+
+        return json;
+
+    }
+
+    /**
+     * Convert DataObject to JsonObjet.
+     * @param idQcm
+     * @param idUser
+     * @param note
+     * @return JSONObject
+     */
+    public String returnJson(long idQcm, long idUser, float note) throws JSONException {
+
+        String json= "";
+
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.accumulate(JSON_COL_ID_QCM, idQcm);
+        jsonObject.accumulate(JSON_COL_ID_USER, idUser);
+        jsonObject.accumulate(JSON_COL_NOTE, note);
+
+        json = jsonObject.toString();
+
+        return json;
+
     }
 
     /**
@@ -290,5 +379,9 @@ public class UserWSAdapter {
         params.put(JSON_COL_PASSWORD, item.getPassword());
 
         return params;
+    }
+
+    public int boolToInt(boolean b) {
+        return b ? 1 : 0;
     }
 }

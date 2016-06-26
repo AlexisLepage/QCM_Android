@@ -44,8 +44,8 @@ public class AnswerSQLiteAdapter {
         return "CREATE TABLE " + TABLE_ANSWER + " ("
                 + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COL_TITLE + " TEXT NOT NULL, "
-                + COL_IS_VALID + " BOOLEAN, "
-                + COL_IS_SELECTED + " BOOLEAN, "
+                + COL_IS_VALID + " INTEGER, "
+                + COL_IS_SELECTED + " INTEGER, "
                 + COL_CREATED_AT + " TEXT NOT NULL, "
                 + COL_UPDATED_AT + " TEXT NOT NULL, "
                 + COL_QUESTION_ID + " INTEGER, "
@@ -114,24 +114,26 @@ public class AnswerSQLiteAdapter {
 
     /**
      * Select a Answer with his Title.
-     * @param title
+     * @param id
      * @return Answer
      */
-    public Answer getAnswerByTitle(String title){
+    public ArrayList<Answer> getAnswerByIdQuestion(long id){
 
         String[] cols = {COL_ID, COL_TITLE, COL_IS_VALID, COL_IS_SELECTED, COL_CREATED_AT, COL_UPDATED_AT, COL_QUESTION_ID};
-        String whereClausesSelect = COL_TITLE + "= ?";
-        String[] whereArgsSelect = {String.valueOf(title)};
+        String whereClausesSelect = COL_QUESTION_ID + "= ?";
+        String[] whereArgsSelect = {String.valueOf(id)};
 
         Cursor c = db.query(TABLE_ANSWER, cols, whereClausesSelect, whereArgsSelect,null, null, null);
 
-        Answer result = null;
+        ArrayList<Answer> result = null;
 
-        if (c.getCount() > 0){
-            c.moveToFirst();
-            result = cursorToItem(c);
+        if (c.moveToFirst()){
+            result = new ArrayList<Answer>();
+            do {
+                result.add(this.cursorToItem(c));
+            } while (c.moveToNext());
         }
-
+        c.close();
         return result;
     }
 
@@ -192,8 +194,8 @@ public class AnswerSQLiteAdapter {
         Answer result = new Answer();
         result.setId(c.getLong(c.getColumnIndex(COL_ID)));
         result.setTitle(c.getString(c.getColumnIndex(COL_TITLE)));
-        result.setIs_valid(Boolean.valueOf(c.getString(c.getColumnIndex(COL_IS_VALID))));
-        result.setIs_selected(Boolean.valueOf(c.getString(c.getColumnIndex(COL_IS_SELECTED))));
+        result.setIs_valid(c.getInt(c.getColumnIndex(COL_IS_VALID)));
+        result.setIs_selected(c.getInt(c.getColumnIndex(COL_IS_SELECTED)));
         result.setCreated_at(c.getString(c.getColumnIndex(COL_CREATED_AT)));
         result.setUpdated_at(c.getString(c.getColumnIndex(COL_UPDATED_AT)));
         result.setQuestion_id(c.getLong(c.getColumnIndex(COL_QUESTION_ID)));
