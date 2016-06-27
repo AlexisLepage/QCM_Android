@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
 
 import com.iia.cdsm.myqcm.Entities.Answer;
 import com.iia.cdsm.myqcm.R;
@@ -32,11 +33,12 @@ public class AnswerCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        final CheckBox cbAnswer = (CheckBox) view.findViewById(R.id.cbAnswer);
+        //final CheckBox cbAnswer = (CheckBox) view.findViewById(R.id.cbAnswer);
+        TextView tvTest = (TextView) view.findViewById(R.id.tvTest);
 
         AnswerSQLiteAdapter answerSQLiteAdapter = new AnswerSQLiteAdapter(context);
         Answer answer = answerSQLiteAdapter.cursorToItem(cursor);
 
-        cbAnswer.setText(answer.getTitle());
+        tvTest.setText(answer.getTitle());
     }
 }

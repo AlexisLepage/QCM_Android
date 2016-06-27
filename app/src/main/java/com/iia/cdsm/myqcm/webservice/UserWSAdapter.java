@@ -28,7 +28,7 @@ import java.util.ArrayList;
  */
 public class UserWSAdapter {
 
-    private static final String BASE_URL = "http://192.168.1.31/Qcm/web/app_dev.php/api";
+    private static final String BASE_URL = "http://172.20.10.4//Qcm/web/app_dev.php/api";
     private static final String UPDATE_QCM = "update_qcm";
     private static final String ENTITY_USER = "users";
     private static final String ENTITY_USER_SIMPLE = "user";

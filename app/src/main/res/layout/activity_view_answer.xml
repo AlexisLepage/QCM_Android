@@ -4,17 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <CheckBox
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title_answer"
-        android:id="@+id/cbAnswer"
+        android:id="@+id/tvTest"
+        android:text="TEST"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:textSize="16dp"
-        android:scaleX="1.2"
-        android:scaleY="1.2"
-        />
+        android:layout_marginTop="10dp"/>
 
 </RelativeLayout>

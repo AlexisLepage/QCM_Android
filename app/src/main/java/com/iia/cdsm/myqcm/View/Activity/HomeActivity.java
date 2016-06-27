@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -23,6 +24,7 @@ import com.iia.cdsm.myqcm.View.Fragment.AccountFragment;
 import com.iia.cdsm.myqcm.View.Fragment.ContactFragment;
 import com.iia.cdsm.myqcm.View.Fragment.ListCategoryFragment;
 import com.iia.cdsm.myqcm.View.Fragment.RulesFragment;
+import com.iia.cdsm.myqcm.webservice.UserWSAdapter;
 
 public class HomeActivity extends Activity {
     private DrawerLayout mDrawerLayout;
@@ -114,6 +116,15 @@ public class HomeActivity extends Activity {
                 break;
 
             case 4:
+                UserWSAdapter userWSAdapter = new UserWSAdapter(this);
+                String url = "http://172.20.10.4/Documentation/aide.html";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+                fragment = new ListCategoryFragment();
+                break;
+
+            case 5:
                 Intent intent = new Intent(HomeActivity.this, ConnectionActivity.class);
                 this.finish();
                 startActivity(intent);

@@ -1,8 +1,11 @@
 package com.iia.cdsm.myqcm.View.Fragment;
 
 import android.app.Fragment;
+import android.app.ListActivity;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorJoiner;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -42,22 +45,27 @@ public class QuestionFragment extends Fragment{
         TextView tvTitleQuestion = (TextView) view.findViewById(R.id.tvTitleQuestion);
         lvAnswers = (ListView) view.findViewById(R.id.lv_answers);
 
+        final ArrayList<Long> longs = new ArrayList<Long>();
+
         lvAnswers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AnswerSQLiteAdapter answerSQLiteAdapter = new AnswerSQLiteAdapter(QuestionFragment.this.getActivity());
-                answerSQLiteAdapter.open();
-                Answer answer = answerSQLiteAdapter.getAnswer(id);
-
-                if (view.isSelected()){
-                    answer.setIs_selected(1);
-                }else{
-                    answer.setIs_selected(0);
+                boolean ok = true;
+                for(long lon : longs){
+                    if (lon == id){
+                        parent.getChildAt(position).setBackgroundColor(Color.WHITE);
+                        longs.remove(lon);
+                        ok = false;
+                    }
                 }
-                answerSQLiteAdapter.updateAnswer(answer);
-                answerSQLiteAdapter.close();
+
+                if (ok){
+                    parent.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorPrimaryTactFactory));
+                    longs.add(id);
+                }
             }
         });
+
 
         Long id = this.getArguments().getLong("id");
 
