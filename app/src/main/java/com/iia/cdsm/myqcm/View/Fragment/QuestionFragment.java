@@ -1,11 +1,8 @@
 package com.iia.cdsm.myqcm.View.Fragment;
 
 import android.app.Fragment;
-import android.app.ListActivity;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.CursorJoiner;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,22 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.iia.cdsm.myqcm.Entities.Answer;
 import com.iia.cdsm.myqcm.Entities.Question;
 import com.iia.cdsm.myqcm.R;
 import com.iia.cdsm.myqcm.View.CursorAdapter.AnswerCursorAdapter;
-import com.iia.cdsm.myqcm.View.CursorAdapter.CategoryCursorAdapter;
 import com.iia.cdsm.myqcm.data.AnswerSQLiteAdapter;
-import com.iia.cdsm.myqcm.data.CategorySQLiteAdapter;
 import com.iia.cdsm.myqcm.data.QuestionSQLiteAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Alex on 17/06/2016.
@@ -36,6 +28,8 @@ import java.util.List;
 public class QuestionFragment extends Fragment{
     ListView lvAnswers = null;
     Question question = null;
+    long id = 0;
+    final ArrayList<Long> longs = new ArrayList<Long>();
 
     @Nullable
     @Override
@@ -45,29 +39,28 @@ public class QuestionFragment extends Fragment{
         TextView tvTitleQuestion = (TextView) view.findViewById(R.id.tvTitleQuestion);
         lvAnswers = (ListView) view.findViewById(R.id.lv_answers);
 
-        final ArrayList<Long> longs = new ArrayList<Long>();
-
         lvAnswers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 boolean ok = true;
+                long idTemp= 0;
                 for(long lon : longs){
                     if (lon == id){
-                        parent.getChildAt(position).setBackgroundColor(Color.WHITE);
-                        longs.remove(lon);
                         ok = false;
                     }
                 }
-
                 if (ok){
                     parent.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorPrimaryTactFactory));
                     longs.add(id);
+                }else {
+                    parent.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorWhite));
+                    longs.remove(id);
                 }
             }
         });
 
 
-        Long id = this.getArguments().getLong("id");
+        id = this.getArguments().getLong("id");
 
         QuestionSQLiteAdapter questionSQLiteAdapter = new QuestionSQLiteAdapter(this.getActivity());
         questionSQLiteAdapter.open();
@@ -83,13 +76,24 @@ public class QuestionFragment extends Fragment{
 
     @Override
     public void onDestroyView() {
-        int number = lvAnswers.getAdapter().getCount();
-        for (int i = 0; i < lvAnswers.getAdapter().getCount(); i++){
-            //Toast.makeText(getActivity(), "ANSWER "+ i + "CHECKED",Toast.LENGTH_LONG ).show();
+        AnswerSQLiteAdapter answerSQLiteAdapter = new AnswerSQLiteAdapter(this.getActivity());
+        answerSQLiteAdapter.open();
+        ArrayList<Answer> answers = answerSQLiteAdapter.getAnswerByIdQuestion(id);
+
+        for (Answer answer : answers){
+            answer.setIs_selected(0);
+            answerSQLiteAdapter.updateAnswer(answer);
         }
 
-        super.onDestroyView();
+        for(long lon : longs){
+            Answer answer = answerSQLiteAdapter.getAnswer(lon);
+            answer.setIs_selected(1);
+            answerSQLiteAdapter.updateAnswer(answer);
+        }
 
+        answerSQLiteAdapter.close();
+
+        super.onDestroyView();
     }
 
     public class LoadTask extends AsyncTask<Void, Void, Cursor> {

@@ -2,10 +2,10 @@ package com.iia.cdsm.myqcm.View.CursorAdapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
@@ -28,17 +28,25 @@ public class AnswerCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.activity_view_answer, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.activity_view_answer, parent, false);
+        AnswerSQLiteAdapter answerSQLiteAdapter = new AnswerSQLiteAdapter(context);
+        Answer answer = answerSQLiteAdapter.cursorToItem(cursor);
+        if (answer.getIs_selected()==1){
+            view.setBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimaryTactFactory));
+        }
+
+        return view;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        //final CheckBox cbAnswer = (CheckBox) view.findViewById(R.id.cbAnswer);
         TextView tvTest = (TextView) view.findViewById(R.id.tvTest);
 
         AnswerSQLiteAdapter answerSQLiteAdapter = new AnswerSQLiteAdapter(context);
         Answer answer = answerSQLiteAdapter.cursorToItem(cursor);
 
         tvTest.setText(answer.getTitle());
+
+
     }
 }

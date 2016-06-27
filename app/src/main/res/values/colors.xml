@@ -7,5 +7,6 @@
 
     <color name="colorPrimaryTactFactory">#92c755</color>
     <color name="colorPrimaryDarkTactFactory">#2c2c2c</color>
+    <color name="colorWhite">#f7f7f7</color>
 
 </resources>
