@@ -125,6 +125,7 @@ public class HomeActivity extends Activity {
                 break;
 
             case 5:
+                getSharedPreferences(ConnectionActivity.MYPREFERENCES, 0).edit().clear().apply();
                 Intent intent = new Intent(HomeActivity.this, ConnectionActivity.class);
                 this.finish();
                 startActivity(intent);

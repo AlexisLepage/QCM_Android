@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.iia.cdsm.myqcm.data.AnswerSQLiteAdapter;
 import com.iia.cdsm.myqcm.data.QcmSQLiteAdapter;
 import com.iia.cdsm.myqcm.data.QuestionSQLiteAdapter;
 import com.iia.cdsm.myqcm.webservice.UserWSAdapter;
+import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.json.JSONException;
@@ -47,6 +49,8 @@ public class QuestionsActivity extends Activity{
 
     final QcmSQLiteAdapter qcmSQLiteAdapter = new QcmSQLiteAdapter(this);
     final UserWSAdapter userWSAdapter = new UserWSAdapter(QuestionsActivity.this);
+
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,30 +150,26 @@ public class QuestionsActivity extends Activity{
     }
 
     protected void postJson (){
-        String json = null;
-
+        
         final ProgressDialog progressDialog = new ProgressDialog(QuestionsActivity.this);
-        progressDialog.setMessage("Envoie des réponses...");
+        progressDialog.setMessage("Envoi des réponses...");
         progressDialog.show();
 
         final float note = calculateNote(id);
 
-        try {
-            json = userWSAdapter.returnJson(id, id, note);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        sharedPreferences = getSharedPreferences(ConnectionActivity.MYPREFERENCES, MODE_PRIVATE);
+        long userId = sharedPreferences.getLong(ConnectionActivity.USER_ID,0);
 
+        RequestParams params = userWSAdapter.itemToParams(id, userId, note);
 
-
-        userWSAdapter.postQcm(json, new TextHttpResponseHandler() {
+        userWSAdapter.postQcm(params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
 
-                Toast.makeText(QuestionsActivity.this, "ERREUR ENVOIE JSON", Toast.LENGTH_LONG).show();
+                Toast.makeText(QuestionsActivity.this, "ERREUR ENVOI JSON", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -188,6 +188,7 @@ public class QuestionsActivity extends Activity{
 
     protected float calculateNote(long idQcm){
         float note = 0;
+        float allPoints = 0;
         Boolean goodAnswer = null;
 
         QuestionSQLiteAdapter questionSQLiteAdapter = new QuestionSQLiteAdapter(this);
@@ -201,6 +202,7 @@ public class QuestionsActivity extends Activity{
             ArrayList<Answer> answers = answerSQLiteAdapter.getAnswerByIdQuestion(question.getId());
             answerSQLiteAdapter.close();
 
+            allPoints = allPoints+question.getValue();
             goodAnswer = true;
 
             if (answers != null){
@@ -215,8 +217,8 @@ public class QuestionsActivity extends Activity{
             }
         }
 
-        note = (note*20)/questions.size();
+        note = (note*20)/allPoints;
 
-        return note;
+        return (float) Math.round(note * 100) / 100;
     }
 }

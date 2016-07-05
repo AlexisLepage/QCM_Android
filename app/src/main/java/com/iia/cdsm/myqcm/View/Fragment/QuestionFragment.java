@@ -36,8 +36,21 @@ public class QuestionFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_question, container, false);
 
+        id = this.getArguments().getLong("id");
+
         TextView tvTitleQuestion = (TextView) view.findViewById(R.id.tvTitleQuestion);
         lvAnswers = (ListView) view.findViewById(R.id.lv_answers);
+
+        AnswerSQLiteAdapter answerSQLiteAdapter = new AnswerSQLiteAdapter(this.getActivity());
+        answerSQLiteAdapter.open();
+        ArrayList<Answer> answersSelected = answerSQLiteAdapter.getAnswerByIdQuestionAndIsSelected(id);
+        answerSQLiteAdapter.close();
+
+        if (answersSelected != null){
+            for (Answer answer : answersSelected){
+                longs.add(answer.getId());
+            }
+        }
 
         lvAnswers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -60,7 +73,7 @@ public class QuestionFragment extends Fragment{
         });
 
 
-        id = this.getArguments().getLong("id");
+
 
         QuestionSQLiteAdapter questionSQLiteAdapter = new QuestionSQLiteAdapter(this.getActivity());
         questionSQLiteAdapter.open();
@@ -80,15 +93,19 @@ public class QuestionFragment extends Fragment{
         answerSQLiteAdapter.open();
         ArrayList<Answer> answers = answerSQLiteAdapter.getAnswerByIdQuestion(id);
 
-        for (Answer answer : answers){
-            answer.setIs_selected(0);
-            answerSQLiteAdapter.updateAnswer(answer);
+        if (answers != null){
+            for (Answer answer : answers){
+                answer.setIs_selected(0);
+                answerSQLiteAdapter.updateAnswer(answer);
+            }
         }
 
-        for(long lon : longs){
-            Answer answer = answerSQLiteAdapter.getAnswer(lon);
-            answer.setIs_selected(1);
-            answerSQLiteAdapter.updateAnswer(answer);
+        if (longs != null){
+            for(long lon : longs){
+                Answer answer = answerSQLiteAdapter.getAnswer(lon);
+                answer.setIs_selected(1);
+                answerSQLiteAdapter.updateAnswer(answer);
+            }
         }
 
         answerSQLiteAdapter.close();

@@ -137,6 +137,32 @@ public class AnswerSQLiteAdapter {
         return result;
     }
 
+
+    /**
+     * Select a Answer by id quetion and is selected.
+     * @param id
+     * @return Answer
+     */
+    public ArrayList<Answer> getAnswerByIdQuestionAndIsSelected(long id){
+
+        String[] cols = {COL_ID, COL_TITLE, COL_IS_VALID, COL_IS_SELECTED, COL_CREATED_AT, COL_UPDATED_AT, COL_QUESTION_ID};
+        String whereClausesSelect = COL_QUESTION_ID + "= ? AND " + COL_IS_SELECTED + "=1";
+        String[] whereArgsSelect = {String.valueOf(id)};
+
+        Cursor c = db.query(TABLE_ANSWER, cols, whereClausesSelect, whereArgsSelect,null, null, null);
+
+        ArrayList<Answer> result = null;
+
+        if (c.moveToFirst()){
+            result = new ArrayList<Answer>();
+            do {
+                result.add(this.cursorToItem(c));
+            } while (c.moveToNext());
+        }
+        c.close();
+        return result;
+    }
+
     /**
      * Get all Answer
      * @return ArrayList<>

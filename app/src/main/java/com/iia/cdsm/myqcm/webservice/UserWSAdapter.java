@@ -28,7 +28,8 @@ import java.util.ArrayList;
  */
 public class UserWSAdapter {
 
-    private static final String BASE_URL = "http://192.168.1.31/Qcm/web/app_dev.php/api";
+    private static final String BASE_URL = "http://192.168.1.63/Qcm/web/app_dev.php/api";
+    private static final String AUTH = "auth";
     private static final String UPDATE_QCM = "update_qcm";
     private static final String ENTITY_USER = "users";
     private static final String ENTITY_USER_SIMPLE = "user";
@@ -96,11 +97,10 @@ public class UserWSAdapter {
      * POST Qcm at WebService.
      * @param json
      * @param handler
+     * @param params
      */
-    public void postQcm(String json, AsyncHttpResponseHandler handler){
+    public void postQcm(RequestParams params, AsyncHttpResponseHandler handler){
         String url = String.format("%s/%s", BASE_URL, UPDATE_QCM);
-        RequestParams params = new RequestParams();
-        params.add("json", json);
         client.post(url, params, handler);
     }
 
@@ -370,18 +370,47 @@ public class UserWSAdapter {
 
     /**
      * Convert DataObject to Params.
-     * @param item
+     * @param idQcm
+     * @param idUser
+     * @param note
      * @return RequestParams
      */
-    public RequestParams itemToParams(User item){
+    public RequestParams itemToParams(long idQcm, long idUser, float note){
         RequestParams params = new RequestParams();
-        params.put(JSON_COL_LOGIN, item.getLogin());
-        params.put(JSON_COL_PASSWORD, item.getPassword());
+        params.put("id_qcm", idQcm);
+        params.put("id_user", idUser);
+        params.put("note", note);
 
         return params;
     }
 
     public int boolToInt(boolean b) {
         return b ? 1 : 0;
+    }
+
+    /**
+     * Send username and password to the webservice
+     * @param user
+     * @param handler
+     */
+    public void auth(User user, AsyncHttpResponseHandler handler){
+        RequestParams params = UserWSAdapter.itemToParams(user);
+
+        String url = String.format("%s/%s", BASE_URL, AUTH);
+        client.post(url, params, handler);
+    }
+
+
+    /**
+     * Create RequestParams with username and password of user
+     * @param user
+     * @return params
+     */
+    public static RequestParams itemToParams(User user){
+        RequestParams params = new RequestParams();
+        params.put(JSON_COL_LOGIN, user.getLogin());
+        params.put(JSON_COL_PASSWORD, user.getPassword());
+
+        return params;
     }
 }
