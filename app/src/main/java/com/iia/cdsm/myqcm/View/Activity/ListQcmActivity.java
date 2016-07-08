@@ -30,6 +30,7 @@ public class ListQcmActivity extends Activity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListQcmActivity.this.finish();
                 Intent intent = new Intent(view.getContext(), BeforeQuestionsActivity.class);
                 intent.putExtra("id", id);
                 startActivity(intent);

@@ -15,6 +15,9 @@ public class Qcm {
     /** Qcm Name */
     protected String name;
 
+    /** Qcm IsDone */
+    protected Integer is_done;
+
     /** Qcm isAvailable */
     protected Boolean is_available;
 
@@ -67,6 +70,22 @@ public class Qcm {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Get Qcm IsDone
+     * @return is_done
+     */
+    public Integer getIs_done() {
+        return is_done;
+    }
+
+    /**
+     * Set Qcm IsDone
+     * @param is_done
+     */
+    public void setIs_done(Integer is_done) {
+        this.is_done = is_done;
     }
 
     /**
@@ -180,6 +199,8 @@ public class Qcm {
     public void setCategory_id(long category_id) {
         this.category_id = category_id;
     }
+
+
 
     @Override
     public String toString() {

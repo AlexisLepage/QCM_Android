@@ -192,6 +192,7 @@ public class CategorySQLiteAdapter {
      * @return Cursor
      */
     public Cursor getAllCursor(){
+
         String[] cols = {COL_ID, COL_NAME, COL_CREATED_AT, COL_UPDATED_AT};
         Cursor c = db.query(TABLE_CATEGORY, cols, null, null, null, null, null);
         return c;

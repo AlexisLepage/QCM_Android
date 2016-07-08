@@ -72,9 +72,6 @@ public class QuestionFragment extends Fragment{
             }
         });
 
-
-
-
         QuestionSQLiteAdapter questionSQLiteAdapter = new QuestionSQLiteAdapter(this.getActivity());
         questionSQLiteAdapter.open();
         question = questionSQLiteAdapter.getQuestion(id);
@@ -86,6 +83,8 @@ public class QuestionFragment extends Fragment{
 
         return view;
     }
+
+
 
     @Override
     public void onDestroyView() {

@@ -117,7 +117,7 @@ public class HomeActivity extends Activity {
 
             case 4:
                 UserWSAdapter userWSAdapter = new UserWSAdapter(this);
-                String url = "http://192.168.1.31/Documentation/aide.html";
+                String url = "http://172.20.10.4/Documentation/aide.html";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
@@ -164,6 +164,8 @@ public class HomeActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+
+
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }

@@ -46,6 +46,8 @@ public class QuestionsActivity extends Activity{
     long id = 0;
     private static final String FORMAT = "%02d:%02d:%02d";
     boolean finished = false;
+    boolean is_post = false;
+    Qcm qcm = new Qcm();
 
     final QcmSQLiteAdapter qcmSQLiteAdapter = new QcmSQLiteAdapter(this);
     final UserWSAdapter userWSAdapter = new UserWSAdapter(QuestionsActivity.this);
@@ -66,7 +68,7 @@ public class QuestionsActivity extends Activity{
 
 
         qcmSQLiteAdapter.open();
-        final Qcm qcm = qcmSQLiteAdapter.getQcm(id);
+        qcm = qcmSQLiteAdapter.getQcm(id);
         qcmSQLiteAdapter.close();
 
         getActionBar().setTitle(qcm.getName());
@@ -125,6 +127,14 @@ public class QuestionsActivity extends Activity{
         fragmentManager.beginTransaction().replace(R.id.content_frame_question, fragmentQuestion).commit();
     }
 
+    @Override
+    protected void onDestroy() {
+        if (!is_post){
+            postJson();
+        }
+        super.onDestroy();
+    }
+
     protected void Timer(long time){
 
         new CountDownTimer(time*60*1000,1000){
@@ -150,7 +160,7 @@ public class QuestionsActivity extends Activity{
     }
 
     protected void postJson (){
-        
+
         final ProgressDialog progressDialog = new ProgressDialog(QuestionsActivity.this);
         progressDialog.setMessage("Envoi des réponses...");
         progressDialog.show();
@@ -162,9 +172,12 @@ public class QuestionsActivity extends Activity{
 
         RequestParams params = userWSAdapter.itemToParams(id, userId, note);
 
+        is_post = true;
+
         userWSAdapter.postQcm(params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
@@ -174,6 +187,14 @@ public class QuestionsActivity extends Activity{
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
+
+                qcm.setIs_done(1);
+
+                QcmSQLiteAdapter qcmSQLiteAdapter = new QcmSQLiteAdapter(QuestionsActivity.this);
+                qcmSQLiteAdapter.open();
+                qcmSQLiteAdapter.updateQcm(qcm);
+                qcmSQLiteAdapter.close();
+
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }

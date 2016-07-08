@@ -19,6 +19,7 @@ public class QcmSQLiteAdapter {
 
     public static final String COL_ID = "_id";
     public static final String COL_NAME = "name";
+    public static final String COL_IS_DONE = "is_done";
     public static final String COL_IS_AVAILABLE = "is_available";
     public static final String COL_BEGINNING_AT = "beginning_at";
     public static final String COL_FINISHED_AT = "finished_at";
@@ -48,6 +49,7 @@ public class QcmSQLiteAdapter {
         return "CREATE TABLE " + TABLE_QCM + " ("
                 + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COL_NAME + " TEXT NOT NULL, "
+                + COL_IS_DONE + " INTEGER, "
                 + COL_IS_AVAILABLE + " BOOLEAN, "
                 + COL_BEGINNING_AT + " TEXT NOT NULL, "
                 + COL_FINISHED_AT + " TEXT NOT NULL, "
@@ -102,7 +104,7 @@ public class QcmSQLiteAdapter {
      */
     public Qcm getQcm(long id){
 
-        String[] cols = {COL_ID, COL_NAME, COL_IS_AVAILABLE, COL_BEGINNING_AT, COL_BEGINNING_AT,
+        String[] cols = {COL_ID, COL_NAME, COL_IS_DONE, COL_IS_AVAILABLE, COL_BEGINNING_AT, COL_BEGINNING_AT,
                 COL_FINISHED_AT, COL_DURATION, COL_CREATED_AT, COL_UPDATED_AT, COL_CATEGORY_ID};
         String whereClausesSelect = COL_ID + "= ?";
         String[] whereArgsSelect = {String.valueOf(id)};
@@ -126,7 +128,7 @@ public class QcmSQLiteAdapter {
      */
     public Qcm getQcmByName(String name){
 
-        String[] cols = {COL_ID, COL_NAME, COL_IS_AVAILABLE, COL_BEGINNING_AT, COL_BEGINNING_AT,
+        String[] cols = {COL_ID, COL_NAME, COL_IS_DONE, COL_IS_AVAILABLE, COL_BEGINNING_AT, COL_BEGINNING_AT,
                 COL_FINISHED_AT, COL_DURATION, COL_CREATED_AT, COL_UPDATED_AT, COL_CATEGORY_ID};
         String whereClausesSelect = COL_NAME + "= ?";
         String[] whereArgsSelect = {String.valueOf(name)};
@@ -182,6 +184,7 @@ public class QcmSQLiteAdapter {
         ContentValues values = new ContentValues();
         values.put(COL_ID, qcm.getId());
         values.put(COL_NAME, qcm.getName());
+        values.put(COL_IS_DONE, qcm.getIs_done());
         values.put(COL_IS_AVAILABLE, qcm.getIs_available());
         values.put(COL_BEGINNING_AT, qcm.getBeginning_at());
         values.put(COL_FINISHED_AT, qcm.getFinished_at());
@@ -202,6 +205,7 @@ public class QcmSQLiteAdapter {
         Qcm result = new Qcm();
         result.setId(c.getLong(c.getColumnIndex(COL_ID)));
         result.setName(c.getString(c.getColumnIndex(COL_NAME)));
+        result.setIs_done(c.getInt(c.getColumnIndex(COL_IS_DONE)));
         result.setIs_available(Boolean.valueOf(c.getString(c.getColumnIndex(COL_IS_AVAILABLE))));
         result.setBeginning_at(c.getString(c.getColumnIndex(COL_BEGINNING_AT)));
         result.setFinished_at(c.getString(c.getColumnIndex(COL_FINISHED_AT)));
@@ -218,7 +222,7 @@ public class QcmSQLiteAdapter {
      * @return Cursor
      */
     public Cursor getAllCursor(){
-        String[] cols = {COL_ID, COL_NAME, COL_IS_AVAILABLE, COL_BEGINNING_AT, COL_BEGINNING_AT,
+        String[] cols = {COL_ID, COL_NAME, COL_IS_DONE, COL_IS_AVAILABLE, COL_BEGINNING_AT, COL_BEGINNING_AT,
                 COL_FINISHED_AT, COL_DURATION, COL_CREATED_AT, COL_UPDATED_AT, COL_CATEGORY_ID};
         Cursor c = db.query(TABLE_QCM, cols, null, null, null, null, null);
         return c;
@@ -233,10 +237,10 @@ public class QcmSQLiteAdapter {
 
         ArrayList<Qcm> result = null;
 
-        String[] cols = {COL_ID, COL_NAME, COL_IS_AVAILABLE, COL_BEGINNING_AT, COL_BEGINNING_AT,
+        String[] cols = {COL_ID, COL_NAME, COL_IS_DONE, COL_IS_AVAILABLE, COL_BEGINNING_AT, COL_BEGINNING_AT,
                 COL_FINISHED_AT, COL_DURATION, COL_CREATED_AT, COL_UPDATED_AT, COL_CATEGORY_ID};
-        String whereClausesSelect = COL_CATEGORY_ID + "= ?";
-        String[] whereArgsSelect = {String.valueOf(id)};
+        String whereClausesSelect = COL_CATEGORY_ID + "= ?AND " + COL_IS_DONE + "= ?";
+        String[] whereArgsSelect = {String.valueOf(id), String.valueOf(0)};
 
         Cursor c = db.query(TABLE_QCM, cols, whereClausesSelect, whereArgsSelect,null, null, null);
 

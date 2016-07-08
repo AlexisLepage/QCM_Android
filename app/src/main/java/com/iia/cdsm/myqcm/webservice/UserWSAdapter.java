@@ -28,7 +28,7 @@ import java.util.ArrayList;
  */
 public class UserWSAdapter {
 
-    private static final String BASE_URL = "http://192.168.1.63/Qcm/web/app_dev.php/api";
+    private static final String BASE_URL = "http://172.20.10.4/Qcm/web/app_dev.php/api";
     private static final String AUTH = "auth";
     private static final String UPDATE_QCM = "update_qcm";
     private static final String ENTITY_USER = "users";
@@ -53,6 +53,7 @@ public class UserWSAdapter {
     private static final String JSON_COL_TITLE = "title";
     private static final String JSON_COL_VALUE = "value";
     private static final String JSON_COL_IS_VALID = "is_valid";
+    private static final String JSON_COL_IS_DONE = "is_done";
     private static final String JSON_COL_IS_SELECTED = "is_selected";
     private static final String JSON_COL_NOTE = "note";
 
@@ -95,7 +96,6 @@ public class UserWSAdapter {
 
     /**
      * POST Qcm at WebService.
-     * @param json
      * @param handler
      * @param params
      */
@@ -146,6 +146,7 @@ public class UserWSAdapter {
                 JSONObject jsonUserQcms = new JSONObject(arrayUserQcm.getString(i));
 
                 JSONObject jsonQcm = new JSONObject(jsonUserQcms.getString(ENTITY_QCM));
+                int is_done = boolToInt(jsonUserQcms.getBoolean(JSON_COL_IS_DONE));
 
                 qcmSQLiteAdapter.open();
                 Qcm qcmResult = qcmSQLiteAdapter.getQcm(jsonQcm.getLong(JSON_COL_ID));
@@ -155,6 +156,7 @@ public class UserWSAdapter {
                     Qcm qcm = new Qcm();
                     qcm.setId(jsonQcm.optInt(JSON_COL_ID));
                     qcm.setName(jsonQcm.getString(JSON_COL_NAME));
+                    qcm.setIs_done(is_done);
                     qcm.setIs_available(jsonQcm.getBoolean(JSON_COL_IS_AVAILABLE));
                     qcm.setBeginning_at(jsonQcm.getString(JSON_COL_BEGINNING_AT));
                     qcm.setFinished_at(jsonQcm.getString(JSON_COL_FINISHED_AT));
@@ -167,6 +169,7 @@ public class UserWSAdapter {
                 }else{
                     if (qcmResult.getId() != jsonQcm.getLong(JSON_COL_ID)){qcmResult.setId(jsonQcm.getLong(JSON_COL_ID));}
                     if (!qcmResult.getName().equals(jsonQcm.getString(JSON_COL_NAME))){qcmResult.setName(jsonQcm.getString(JSON_COL_NAME));}
+                    if (!qcmResult.getIs_done().equals(is_done)) {qcmResult.setIs_done(is_done);}
                     if (!qcmResult.getIs_available().equals(jsonQcm.getBoolean(JSON_COL_IS_AVAILABLE))){qcmResult.setIs_available(jsonQcm.getBoolean(JSON_COL_IS_AVAILABLE));}
                     if (!qcmResult.getBeginning_at().equals(jsonQcm.getString(JSON_COL_BEGINNING_AT))){qcmResult.setBeginning_at(jsonQcm.getString(JSON_COL_BEGINNING_AT));}
                     if (!qcmResult.getFinished_at().equals(jsonQcm.getString(JSON_COL_FINISHED_AT))){qcmResult.setFinished_at(jsonQcm.getString(JSON_COL_FINISHED_AT));}
